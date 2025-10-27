@@ -16,6 +16,9 @@ public:
 		cards = new Card[size];
 		numCards = size;
 	}
+	void fillDeck();
+	void shuffle();
+	bool draw(int);
 };
 
 class Card
@@ -30,20 +33,22 @@ class BasicCard : public Card
 {
 private:
 	int rank; //0=0, 1=1...
-	string suit; //purple, green, yellow, blue
+	string suit; //red, green, yellow, blue
+	bool plus;
 public:
-	BasicCard(int rank, string suit)
+	BasicCard(int rank, string suit, bool plus = false)
 	{
 		this->rank = rank;
 		this->suit = suit;
+		this->plus = plus;
 	}
-	BasicCard(int rank, int suit)
+	BasicCard(int rank, int suit, bool plus = false)
 	{
 		this->rank = rank;
 		switch (suit)
 		{
 		case 1:
-			this->suit = "purple";
+			this->suit = "red";
 			break;
 		case 2:
 			this->suit = "green";
@@ -55,8 +60,21 @@ public:
 			this->suit = "blue";
 			break;
 		}
+		this->plus = plus;
 	}
 	int getRank() { return rank; }
 	string getSuit() { return suit; }
+	bool getPlus() { return plus; }
+	void onPlay();
 
 };
+
+class WildCard : public Card
+{
+private:
+	bool plus;
+	WildCard(bool plus = false)
+	{
+		this->plus = plus;
+	}
+}
