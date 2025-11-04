@@ -9,18 +9,18 @@
 #include <bits/stdc++.h> //for random_shuffle() https://www.geeksforgeeks.org/cpp/how-to-shuffle-a-vector-in-cpp/
 
 #include "Deck.h"
-#include "Player.h"
 
 using namespace std;
+void Card::onPlay(){};
 
-BasicCard::BasicCard(int rank, string suit, bool plus = false)
+BasicCard::BasicCard(int rank, string suit, bool plus)
 {
 	this->rank = rank;
 	this->suit = suit;
 	this->plus = plus;
 }
 
-BasicCard::BasicCard(int rank, int suit, bool plus = false)
+BasicCard::BasicCard(int rank, int suit, bool plus)
 {
 	this->rank = rank;
 	switch (suit)
@@ -56,18 +56,18 @@ bool BasicCard::getPlus()
 	return plus;
 }
 
-WildCard::WildCard(bool plus = false)
+WildCard::WildCard(bool plus)
 {
     this->plus = plus;
 }
 
-BasicCard* makeBasicCard(int rank, int suit, bool plus = false)
+BasicCard* makeBasicCard(int rank, int suit, bool plus)
 {
     BasicCard* theCard= new BasicCard(rank, suit, plus);
     return theCard;
 }
 
-WildCard* makeWildCard(bool plus = false)
+WildCard* makeWildCard(bool plus)
 {
     WildCard* theCard= new WildCard(plus);
     return theCard;
@@ -118,12 +118,4 @@ Deck::~Deck()
     
 }
 
-int main()
-{
-	srand(time(0));
-	Deck newDeck;
-	newDeck.fillDeck();
-	newDeck.shuffle();
-	return 0;
-}
 
