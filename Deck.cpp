@@ -8,73 +8,58 @@
 #include <vector> //vectors
 #include <bits/stdc++.h> //for random_shuffle() https://www.geeksforgeeks.org/cpp/how-to-shuffle-a-vector-in-cpp/
 
+#include "Deck.h"
+#include "Player.h"
 
 using namespace std;
 
-class Card
+BasicCard::BasicCard(int rank, string suit, bool plus = false)
 {
-private:
+	this->rank = rank;
+	this->suit = suit;
+	this->plus = plus;
+}
 
-public:
-
-};
-
-class BasicCard : public Card
+BasicCard::BasicCard(int rank, int suit, bool plus = false)
 {
-private:
-	int rank; //0=0, 1=1...
-	string suit; //red, green, yellow, blue
-	bool plus;
-public:
-	BasicCard(int rank, string suit, bool plus = false)
+	this->rank = rank;
+	switch (suit)
 	{
-		this->rank = rank;
-		this->suit = suit;
-		this->plus = plus;
+	case 1:
+		this->suit = "red";
+		break;
+	case 2:
+		this->suit = "green";
+		break;
+	case 3:
+		this->suit = "yellow";
+		break;
+	case 4:
+		this->suit = "blue";
+		break;
 	}
-	BasicCard(int rank, int suit, bool plus = false)
-	{
-		this->rank = rank;
-		switch (suit)
-		{
-		case 1:
-			this->suit = "red";
-			break;
-		case 2:
-			this->suit = "green";
-			break;
-		case 3:
-			this->suit = "yellow";
-			break;
-		case 4:
-			this->suit = "blue";
-			break;
-		}
-		this->plus = plus;
-	}
-	int getRank() {
-		return rank;
-	}
-	string getSuit() {
-		return suit;
-	}
-	bool getPlus() {
-		return plus;
-	}
-	void onPlay();
+	this->plus = plus;
+}
 
-};
-
-class WildCard : public Card
+int BasicCard::getRank()
 {
-private:
-	bool plus;
-public:
-	WildCard(bool plus = false)
-	{
-		this->plus = plus;
-	}
-};
+	return rank;
+}
+
+string BasicCard::getSuit()
+{
+	return suit;
+}
+
+bool BasicCard::getPlus() 
+{
+	return plus;
+}
+
+WildCard::WildCard(bool plus = false)
+{
+    this->plus = plus;
+}
 
 BasicCard* makeBasicCard(int rank, int suit, bool plus = false)
 {
@@ -87,21 +72,6 @@ WildCard* makeWildCard(bool plus = false)
     WildCard* theCard= new WildCard(plus);
     return theCard;
 }
-
-class Deck
-{
-private:
-	vector<Card*> cards;
-	int numCards;
-public:
-	void fillDeck();
-	void shuffle()
-	{
-	    random_shuffle(cards.begin(), cards.end());
-	};
-	bool draw(int);
-	~Deck();
-};
 
 void Deck::fillDeck()
 {
@@ -129,12 +99,23 @@ void Deck::fillDeck()
 	}
 };
 
+void Deck::shuffle()
+{
+    random_shuffle(cards.begin(), cards.end());
+    cout<<"Shuffle Shuffle Shuffle"<<endl;
+}
+
 Deck::~Deck()
 {
     for(Card* card: cards)
     {
         delete card;
     }
+    for(Card* card: playPile)
+    {
+        delete card;
+    }
+    
 }
 
 int main()
@@ -145,3 +126,4 @@ int main()
 	newDeck.shuffle();
 	return 0;
 }
+
