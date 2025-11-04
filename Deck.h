@@ -1,8 +1,7 @@
 #pragma once
 #include <iostream> //Generic c++
 #include <vector>
-
-#include "Deck.h"
+#include <string>
 
 using namespace std;
 
@@ -19,12 +18,12 @@ private:
 	string suit; //red, green, yellow, blue
 	bool plus;
 public:
-	BasicCard(int rank, string suit, bool plus = false);
-	BasicCard(int rank, int suit, bool plus = false);
+	BasicCard(int, string, bool= false);
+	BasicCard(int, int, bool= false);
 	int getRank();
 	string getSuit();
 	bool getPlus();
-	void onPlay();
+	void onPlay(){};
 };
 
 class WildCard : public Card
@@ -32,17 +31,22 @@ class WildCard : public Card
 private:
 	bool plus;
 public:
-	WildCard(bool plus = false);
+	WildCard(bool=false);
 };
 
 class Deck
 {
 private:
-	Card* cards;
+	vector<Card*> cards;
+	vector<Card*> playPile;
 	int numCards;
 public:
-	Deck(int size);
 	void fillDeck();
 	void shuffle();
-	bool draw(int);
+	bool draw(int b){return true;}
+	~Deck();
 };
+
+BasicCard* makeBasicCard(int rank, int suit, bool plus = false);
+
+WildCard* makeWildCard(bool plus = false);
