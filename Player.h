@@ -13,4 +13,5 @@ private:
 	int size;
 public:
 	void giveCard(Card& c);
+	Card playCard(int c);
 };

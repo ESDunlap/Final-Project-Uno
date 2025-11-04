@@ -9,7 +9,15 @@
 
 using namespace std;
 
-void giveCard(Card& c)
+void Player::giveCard(Card& c)
 {
 	hand.push_back(c);
+}
+
+Card Player::playCard(int c)
+{
+	Card play = hand[c];
+	play.onPlay();
+	hand.erase(hand.begin() + c);
+	return play;
 }
