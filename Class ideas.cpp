@@ -4,6 +4,9 @@
 #include <iomanip> //Input Output additions
 #include <iostream>
 #include <fstream>
+#include <cstdlib>
+#include <vector> //vectors
+#include <bits/stdc++.h> //for random_shuffle() https://www.geeksforgeeks.org/cpp/how-to-shuffle-a-vector-in-cpp/
 
 
 using namespace std;
@@ -73,20 +76,31 @@ public:
 	}
 };
 
+BasicCard* makeBasicCard(int rank, int suit, bool plus = false)
+{
+    BasicCard* theCard= new BasicCard(rank, suit, plus);
+    return theCard;
+}
+
+WildCard* makeWildCard(bool plus = false)
+{
+    WildCard* theCard= new WildCard(plus);
+    return theCard;
+}
+
 class Deck
 {
 private:
-	Card* cards;
+	vector<Card*> cards;
 	int numCards;
 public:
-	Deck(int size)
-	{
-		cards = new Card[size];
-		numCards = size;
-	}
 	void fillDeck();
-	void shuffle();
+	void shuffle()
+	{
+	    random_shuffle(cards.begin(), cards.end());
+	};
 	bool draw(int);
+	~Deck();
 };
 
 void Deck::fillDeck()
@@ -96,71 +110,37 @@ void Deck::fillDeck()
 	{
 		for(int color = 0; color < 4; color++)
 		{
-			cards[color + rank * 4] = BasicCard(rank, color + 1);
+			cards.push_back(makeBasicCard(rank, color + 1));
 			if (rank != 0)
-				cards[40 + color + (rank - 1) * 4] = BasicCard(rank, color + 1);
+				cards.push_back(makeBasicCard(rank, color + 1));
 		}
 	}
 	//plus cards
 	for(int color = 0; color < 4; color++)
 	{
-		cards[76 + color] = BasicCard(2, color + 1, true);
-		cards[80 + color] = BasicCard(2, color + 1, true);
+		cards.push_back(makeBasicCard(2, color + 1, true));
+		cards.push_back(makeBasicCard(2, color + 1, true));
 	}
 	//wild cards
 	for(int wildNumber = 0; wildNumber < 4; wildNumber++)
 	{
-		cards[84 + wildNumber] = WildCard();
-		cards[88 + wildNumber] = WildCard(true);
+		cards.push_back(makeWildCard());
+		cards.push_back(makeWildCard(true));
 	}
 };
 
-void Deck::shuffle()
+Deck::~Deck()
 {
-	Card shuffledCards[numCards];
-	int alreadyChosenSlots[numCards];
-	int chosenSlot;
-	bool slotChosen = false;
-	bool alreadyBeenChosen = false;
-	int slots;
-	for(int chosenCard= 0; chosenCard < numCards; chosenCard++)
-	{
-		do
-		{
-			chosenSlot= rand() % numCards;
-			for(int alreadyChosen: alreadyChosenSlots)
-			{
-				if (chosenSlot == alreadyChosen)
-				{
-					alreadyBeenChosen= true;
-				}
-			}
-			if(alreadyBeenChosen==false)
-			{
-				shuffledCards[chosenSlot] = cards[chosenCard];
-				alreadyChosenSlots[chosenCard]= chosenSlot;
-				slotChosen= true;
-			}
-			alreadyBeenChosen= false;
-
-		}
-		while(slotChosen== false);
-		slotChosen=false;
-	}
-	for(int randomSpot = 0; randomSpot < numCards; randomSpot++)
-	{
-		cards[randomSpot]= shuffledCards[randomSpot];
-	}
-	for(int alreadyChosen: alreadyChosenSlots)
-	{
-		cout<<alreadyChosen<<endl;
-	}
+    for(Card* card: cards)
+    {
+        delete card;
+    }
 }
 
 int main()
 {
 	srand(time(0));
-	Deck newDeck(88);
+	Deck newDeck;
 	newDeck.fillDeck();
 	newDeck.shuffle();
 	return 0;
