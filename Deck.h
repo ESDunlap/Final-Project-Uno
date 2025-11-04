@@ -9,7 +9,7 @@ using namespace std;
 class Card
 {
 public:
-	virtual onPlay();
+	void virtual onPlay();
 };
 
 class BasicCard : public Card
