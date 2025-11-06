@@ -8,6 +8,7 @@ using namespace std;
 class Card
 {
 public:
+    virtual int getRank(){return 0;}
 	void virtual onPlay();
 };
 
@@ -20,9 +21,9 @@ private:
 public:
 	BasicCard(int, string, bool= false);
 	BasicCard(int, int, bool= false);
-	int getRank();
-	string getSuit();
-	bool getPlus();
+	int getRank(){return rank;}
+	string getSuit(){return suit;}
+	bool getPlus(){return plus;}
 	void onPlay(){};
 };
 
@@ -31,7 +32,7 @@ class WildCard : public Card
 private:
 	bool plus;
 public:
-	WildCard(bool=false);
+	WildCard(bool plus=false){this->plus = plus;}
 };
 
 class Deck
@@ -43,7 +44,7 @@ private:
 public:
 	void fillDeck();
 	void shuffle();
-	bool draw(int b){return true;}
+	Card* drawTop();
 	~Deck();
 };
 
