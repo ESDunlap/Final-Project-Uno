@@ -8,6 +8,9 @@
 #include <vector> //vectors
 #include <bits/stdc++.h> //for random_shuffle() https://www.geeksforgeeks.org/cpp/how-to-shuffle-a-vector-in-cpp/
 
+//Clear found by https://www.geeksforgeeks.org/cpp/vector-clear-in-cpp-stl/
+//Erase found by https://www.w3schools.com/cpp/trycpp.asp?filename=demo_ref_vector_erase
+
 #include "Deck.h"
 
 using namespace std;
@@ -39,26 +42,6 @@ BasicCard::BasicCard(int rank, int suit, bool plus)
 		break;
 	}
 	this->plus = plus;
-}
-
-int BasicCard::getRank()
-{
-	return rank;
-}
-
-string BasicCard::getSuit()
-{
-	return suit;
-}
-
-bool BasicCard::getPlus() 
-{
-	return plus;
-}
-
-WildCard::WildCard(bool plus)
-{
-    this->plus = plus;
 }
 
 BasicCard* makeBasicCard(int rank, int suit, bool plus)
@@ -103,6 +86,19 @@ void Deck::shuffle()
 {
     random_shuffle(cards.begin(), cards.end());
     cout<<"Shuffle Shuffle Shuffle"<<endl;
+}
+
+Card* Deck::drawTop()
+{
+    if(cards.empty())
+    {
+        cards= playPile;
+        playPile.clear();
+    }
+    Card* topCard = cards[0];
+    cards.erase(cards.begin());
+    cout<<topCard->getRank()<<endl;
+    return topCard;
 }
 
 Deck::~Deck()
