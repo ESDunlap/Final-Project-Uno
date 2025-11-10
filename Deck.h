@@ -32,10 +32,12 @@ class WildCard : public Card
 private:
 	bool plus;
 	int rank = -1;
+	int suit = -1;
 public:
 	WildCard(bool plus=false){this->plus = plus;}
 	bool getPlus(){return plus;}
 	int getRank(){return rank;}
+	int getSuit(){return suit;}
 };
 
 class Deck
