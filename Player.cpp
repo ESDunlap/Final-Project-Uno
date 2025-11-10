@@ -12,6 +12,7 @@ using namespace std;
 void Player::giveCard(Card& c)
 {
 	hand.push_back(c);
+	size++;
 }
 
 /*
@@ -63,10 +64,41 @@ void Player::giveCard(Card& c)
 										3+			{basic, skip, b+, wild, rev, wild+}
 
 */
+int Player::decideCard(BasicCard lastCard)
+{ 
+	if (lastCard.getPlus())
+	{
+		return
+	}
+}
+
+bool Player::findCardType(int type, int suit, int& spot)
+{ // 0 = basic, 1 = basic+, 2 wild, 3 = wild+, 4 = reverse, 5 = skip
+	for (int i = 0; i < size; i++)
+	{
+		if (hand[i].getSuit() == -1 || hand[i].getSuit() == suit)
+		{
+
+			switch (type)
+			{
+			case 0:
+				if (hand[i].getRank != -1 && hand[i].getRank != -2 && hand[i].getRank != -3)
+				{
+					spot = i;
+					return true;
+				}
+			}
+
+		}
+
+	}
+}
+
 Card Player::playCard(int c)
 {
 	Card play = hand[c];
 	play.onPlay();
 	hand.erase(hand.begin() + c);
+	size--;
 	return play;
 }
