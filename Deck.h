@@ -33,11 +33,13 @@ private:
 	bool plus;
 	int rank = -1;
 	int suit = -1;
+	string chosenSuit;
 public:
 	WildCard(bool plus=false){this->plus = plus;}
-	bool getPlus(){return plus;}
-	int getRank(){return rank;}
-	int getSuit(){return suit;}
+	bool getPlus() { return plus; }
+	int getRank() { return rank; }
+	int getSuit() { return suit; }
+	string getChosenSuit() { return chosenSuit; }
 };
 
 class Deck
