@@ -9,12 +9,27 @@
 #include <bits/stdc++.h> //for random_shuffle() https://www.geeksforgeeks.org/cpp/how-to-shuffle-a-vector-in-cpp/
 
 #include "Deck.h"
+#include "Player.h"
+
 
 int main()
 {
     srand(time(0));
 	Deck newDeck;
+	Player p;
+	newDeck.startGame();
+	BasicCard bC(1, 1, 1);
+	if(bC.onPlay(newDeck))
+	{
+	    cout<<"Card Played"<<endl;
+	}
+	/*
 	newDeck.fillDeck();
 	newDeck.shuffle();
+	p.giveCard(newDeck);
+	p.giveCard(newDeck);
+	p.playCard(0);
+	newDeck.drawTop();
+	*/
 	return 0;
 }
