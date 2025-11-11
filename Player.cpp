@@ -9,9 +9,11 @@
 
 using namespace std;
 
-void Player::giveCard(Card& c)
+void Player::giveCard(Deck& d)
 {
-	hand.push_back(c);
+    Card* newCard= d.drawTop();
+	hand.push_back(newCard);
+	cout<<newCard->getRank()<<endl; //debug
 	size++;
 }
 
@@ -68,21 +70,22 @@ int Player::decideCard(BasicCard lastCard)
 { 
 	if (lastCard.getPlus())
 	{
-		return
+		return 1; //Added so I can compile it change later
 	}
+	return 0; //Added so I can compile it change later
 }
 
 bool Player::findCardType(int type, int suit, int& spot)
 { // 0 = basic, 1 = basic+, 2 wild, 3 = wild+, 4 = reverse, 5 = skip
 	for (int i = 0; i < size; i++)
 	{
-		if (hand[i].getSuit() == -1 || hand[i].getSuit() == suit)
+		if (hand[i]->getSuit() == -1 || hand[i]->getSuit() == suit)
 		{
 
 			switch (type)
 			{
 			case 0:
-				if (hand[i].getRank != -1 && hand[i].getRank != -2 && hand[i].getRank != -3)
+				if (hand[i]->getRank() != -1 && hand[i]->getRank() != -2 && hand[i]->getRank() != -3)
 				{
 					spot = i;
 					return true;
@@ -90,15 +93,27 @@ bool Player::findCardType(int type, int suit, int& spot)
 			}
 
 		}
-
 	}
+	return false; //Added so I can compile it change later
 }
 
-Card Player::playCard(int c)
+void Player::playCard(int c, Deck& d)
 {
-	Card play = hand[c];
-	play.onPlay();
-	hand.erase(hand.begin() + c);
-	size--;
-	return play;
+	Card* play = hand[c];
+	//Errors out right now
+	//if(play->onPlay(d));
+	//{
+    	hand.erase(hand.begin() + c);
+    	size--;
+    	lastPlayedCard= play;
+	//}
+}
+
+Player::~Player()
+{
+    for(Card* card: hand)
+    {
+        delete card;
+        cout<<"Deleted a card"<<endl;
+    }
 }
