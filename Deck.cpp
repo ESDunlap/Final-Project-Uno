@@ -14,33 +14,25 @@
 #include "Deck.h"
 
 using namespace std;
-void Card::onPlay(){};
 
 BasicCard::BasicCard(int rank, string suit, bool plus)
 {
-	this->rank = rank;
-	this->suit = suit;
-	this->plus = plus;
+ 	this->rank = rank;
+ 	if(suit=="red")
+		this->suit = 1;
+	else if(suit=="green")
+		this->suit = 2;
+	else if(suit=="yellow")
+		this->suit = 3;
+	else
+		this->suit = 4;
+	this->plus = plus;   
 }
 
 BasicCard::BasicCard(int rank, int suit, bool plus)
 {
 	this->rank = rank;
-	switch (suit)
-	{
-	case 1:
-		this->suit = "red";
-		break;
-	case 2:
-		this->suit = "green";
-		break;
-	case 3:
-		this->suit = "yellow";
-		break;
-	case 4:
-		this->suit = "blue";
-		break;
-	}
+	this->suit = suit;
 	this->plus = plus;
 }
 
@@ -48,6 +40,17 @@ BasicCard* makeBasicCard(int rank, int suit, bool plus)
 {
     BasicCard* theCard= new BasicCard(rank, suit, plus);
     return theCard;
+}
+
+bool BasicCard::onPlay(Deck& d)
+{
+    cout<<d.playPile[0]->getRank()<<endl;//debug
+    cout<<d.playPile[0]->getSuit()<<endl;//debug
+    if((getRank()==d.playPile[0]->getRank())||(getSuit()==d.playPile[0]->getSuit()))
+    {
+        return true;
+    }
+    return false;
 }
 
 WildCard* makeWildCard(bool plus)
@@ -85,7 +88,7 @@ void Deck::fillDeck()
 void Deck::shuffle()
 {
     random_shuffle(cards.begin(), cards.end());
-    cout<<"Shuffle Shuffle Shuffle"<<endl;
+    cout<<"Shuffle Shuffle Shuffle"<<endl; //debug
 }
 
 Card* Deck::drawTop()
@@ -93,11 +96,12 @@ Card* Deck::drawTop()
     if(cards.empty())
     {
         cards= playPile;
+        shuffle();
         playPile.clear();
     }
     Card* topCard = cards[0];
     cards.erase(cards.begin());
-    cout<<topCard->getRank()<<endl;
+    cout<<topCard->getRank()<<endl; //debug
     return topCard;
 }
 
@@ -113,5 +117,13 @@ Deck::~Deck()
     }
     
 }
+
+void Deck::startGame()
+{
+    fillDeck();
+    shuffle();
+    playPile.push_back(drawTop());
+}
+
 
 
