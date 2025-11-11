@@ -8,9 +8,10 @@ using namespace std;
 class Card
 {
 public:
-    virtual int getRank(){return 0;}
-    virtual int getSuit(){return 0;}
-	virtual bool onPlay(){return false;}
+	virtual int getRank() { return 0; }
+	virtual int getSuit() { return 0; }
+	virtual bool getPlus() { return false; }
+	virtual bool onPlay() { return false; }
 };
 
 class WildCard : public Card
