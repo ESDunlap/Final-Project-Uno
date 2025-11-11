@@ -9,12 +9,14 @@ using namespace std;
 class Player
 {
 private:
-	vector<Card> hand;
+	vector<Card*> hand;
 	int size;
 public: 
+    Card* lastPlayedCard;
 	int getSize() { return size; }
-	void giveCard(Card& c);
+	void giveCard(Deck&);
 	int decideCard(BasicCard lastCard); // Overloaded
 	bool findCardType(int type, int suit, int& spot);
-	Card playCard(int c);
+	void playCard(int, Deck&);
+	~Player();
 };
