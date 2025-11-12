@@ -22,7 +22,7 @@ public:
     Card* lastPlayedCard;
 	int getSize() { return size; }
 	void giveCard(Deck&);
-	int decideCard(BasicCard lastCard); // Overloaded
+	int decideCard(BasicCard lastCard, Player& nextPlayer, Player& oppositePlayer, Player& previousPlayer); // Overloaded
 	bool findCardType(int type, int suit, int& spot);
 	void playCard(int, Deck&);
 	~Player();
