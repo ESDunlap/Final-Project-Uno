@@ -48,9 +48,21 @@ WildCard* makeWildCard(bool plus)
     return theCard;
 }
 
+ReverseCard* makeReverseCard(int suit)
+{
+    ReverseCard* theCard= new ReverseCard(suit);
+    return theCard;
+}
+
+SkipCard* makeSkipCard(int suit)
+{
+    SkipCard* theCard= new SkipCard(suit);
+    return theCard;
+}
+
 void Deck::fillDeck()
 {
-	//number cards
+	//Number Cards
 	for(int rank = 0; rank < 10; rank++)
 	{
 		for(int color = 0; color < 4; color++)
@@ -60,13 +72,20 @@ void Deck::fillDeck()
 				cards.push_back(makeBasicCard(rank, color + 1));
 		}
 	}
-	//plus cards
+	//Special cards
 	for(int color = 0; color < 4; color++)
 	{
+		//Plus Cards
 		cards.push_back(makeBasicCard(2, color + 1, true));
 		cards.push_back(makeBasicCard(2, color + 1, true));
+		//Reverse Cards
+		cards.push_back(makeReverseCard(color + 1));
+		cards.push_back(makeReverseCard(color + 1));
+		//Skip Card
+		cards.push_back(makeSkipCard(color + 1));
+		cards.push_back(makeSkipCard(color + 1));
 	}
-	//wild cards
+	//Wild Cards
 	for(int wildNumber = 0; wildNumber < 4; wildNumber++)
 	{
 		cards.push_back(makeWildCard());
@@ -127,3 +146,4 @@ bool Deck::onPlay(Card* c)
     cout<<"Return False"<<endl;
     return false;
 }
+
