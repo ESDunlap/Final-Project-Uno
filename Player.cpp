@@ -13,7 +13,6 @@ void Player::giveCard(Deck& d)
 {
     Card* newCard= d.drawTop();
 	hand.push_back(newCard);
-	cout<<newCard->getRank()<<endl; //debug
 	size++;
 }
 
@@ -66,9 +65,10 @@ void Player::giveCard(Deck& d)
 										3+			{basic, skip, basic+, wild, rev, wild+}
 
 */
-int Player::decideCard(BasicCard lastCard)
+int Player::decideCard(BasicCard lastCard, Player& nextPlayer, Player& crossPlayer, Player& previousPlayer)
 { 
 	int location = -1;
+	int priority[6] = { 3, 3, 3, 3, 3, 3 }; //Moved as it said it was out of scope before
 	if (lastCard.getPlus()) // + Check
 	{
 		if (lastCard.getRank() == -1)// Wild Check
@@ -88,15 +88,14 @@ int Player::decideCard(BasicCard lastCard)
 	}
 	else
 	{
-		int priority[6] = { 3, 3, 3, 3, 3, 3 };
-		if (NextPlayerOnLowCard) // Next Player On Low Cards
+		if (nextPlayer.getSize()<=2) // Next Player On Low Cards
 		{
 			priority[0] = BasicP;
 			priority[5] = Basic;
-			if (PreviousPlayerOnLowCard) // Previous Player On Low Cards
+			if (previousPlayer.getSize()<=2) // Previous Player On Low Cards
 			{
 				priority[4] = Reverse;
-				if (CrossPlayerOnLowCard) // Cross Player On Low Cards
+				if (crossPlayer.getSize()<=2) // Cross Player On Low Cards
 				{
 					priority[1] = WildP;
 					priority[2] = Wild;
@@ -111,7 +110,7 @@ int Player::decideCard(BasicCard lastCard)
 			}
 			else // Previous Player Not On Low Cards
 			{
-				if (CrossPlayerOnLowCard) // Cross Player On Low Cards
+				if (crossPlayer.getSize()<=2) // Cross Player On Low Cards
 				{
 					priority[1] = Reverse;
 					priority[2] = Wild;
@@ -138,10 +137,10 @@ int Player::decideCard(BasicCard lastCard)
 		else // Next Player Not On Low Cards
 		{
 			priority[0] = Basic;
-			if (PreviousPlayerOnLowCard) // Previous Player On Low Cards
+			if (previousPlayer.getSize()<=2) // Previous Player On Low Cards
 			{
 				priority[5] = Reverse;
-				if (CrossPlayerOnLowCard) // Cross Player On Low Cards
+				if (crossPlayer.getSize()<=2) // Cross Player On Low Cards
 				{
 					priority[1] = BasicP;
 					priority[2] = Wild;
@@ -167,7 +166,7 @@ int Player::decideCard(BasicCard lastCard)
 			}
 			else // Previous Player Not On Low Cards
 			{
-				if (CrossPlayerOnLowCard) // Cross Player On Low Cards
+				if (crossPlayer.getSize()<=2) // Cross Player On Low Cards
 				{
 					if (lastCard.getRank() == Reverse) // Last Card Was Reverse
 					{
@@ -294,13 +293,13 @@ bool Player::findCardType(int type, int suit, int& spot)
 void Player::playCard(int c, Deck& d)
 {
 	Card* play = hand[c];
-	//Errors out right now
-	//if(play->onPlay(d));
-	//{
+	if(d.onPlay(play))
+	{
     	hand.erase(hand.begin() + c);
     	size--;
     	lastPlayedCard= play;
-	//}
+    	cout<<"Card was Played"<<endl;
+	}
 }
 
 Player::~Player()
