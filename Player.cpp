@@ -65,7 +65,7 @@ void Player::giveCard(Deck& d)
 										3+			{basic, skip, basic+, wild, rev, wild+}
 
 */
-int Player::decideCard(BasicCard lastCard, Player& nextPlayer, Player& crossPlayer, Player& previousPlayer)
+int Player::decideCard(Card lastCard, Player& nextPlayer, Player& crossPlayer, Player& previousPlayer)
 { 
 	int location = -1;
 	int priority[6] = { 3, 3, 3, 3, 3, 3 }; //Moved as it said it was out of scope before
