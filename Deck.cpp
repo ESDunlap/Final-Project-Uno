@@ -42,17 +42,6 @@ BasicCard* makeBasicCard(int rank, int suit, bool plus)
     return theCard;
 }
 
-bool BasicCard::onPlay(Deck& d)
-{
-    cout<<d.playPile[0]->getRank()<<endl;//debug
-    cout<<d.playPile[0]->getSuit()<<endl;//debug
-    if((getRank()==d.playPile[0]->getRank())||(getSuit()==d.playPile[0]->getSuit()))
-    {
-        return true;
-    }
-    return false;
-}
-
 WildCard* makeWildCard(bool plus)
 {
     WildCard* theCard= new WildCard(plus);
@@ -101,7 +90,6 @@ Card* Deck::drawTop()
     }
     Card* topCard = cards[0];
     cards.erase(cards.begin());
-    cout<<topCard->getRank()<<endl; //debug
     return topCard;
 }
 
@@ -125,5 +113,17 @@ void Deck::startGame()
     playPile.push_back(drawTop());
 }
 
-
-
+bool Deck::onPlay(Card* c)
+{
+    cout<<"Played Rank: "<<c->getRank()<<endl; //debug
+    cout<<"Played Suit: "<<c->getSuit()<<endl;
+    cout<<"Top Rank: "<<playPile[0]->getRank()<<endl; //debug
+    cout<<"Top Suit: "<<playPile[0]->getSuit()<<endl; //debug
+    if((c->getRank()==playPile[0]->getRank())||(c->getSuit()==playPile[0]->getSuit()))
+    {
+        cout<<"Return True"<<endl;
+        return true;
+    }
+    cout<<"Return False"<<endl;
+    return false;
+}
