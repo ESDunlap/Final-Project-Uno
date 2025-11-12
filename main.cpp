@@ -18,11 +18,8 @@ int main()
 	Deck newDeck;
 	Player p;
 	newDeck.startGame();
-	BasicCard bC(1, 1, 1);
-	if(bC.onPlay(newDeck))
-	{
-	    cout<<"Card Played"<<endl;
-	}
+	p.giveCard(newDeck);
+	p.playCard(0, newDeck);
 	/*
 	newDeck.fillDeck();
 	newDeck.shuffle();
