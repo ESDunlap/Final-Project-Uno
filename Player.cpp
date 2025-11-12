@@ -71,16 +71,16 @@ int Player::decideCard(BasicCard lastCard, Player& nextPlayer, Player& crossPlay
 	int priority[6] = { 3, 3, 3, 3, 3, 3 }; //Moved as it said it was out of scope before
 	if (lastCard.getPlus()) // + Check
 	{
-		if (lastCard.getRank() == -1)// Wild Check
+		if (lastCard.getRank() == Wild)// Wild Check
 		{
-			if (findCardType(3, lastCard.getSuit(), location))
+			if (findCardType(WildP, lastCard.getSuit(), location))
 			{
 				return location;
 			}
 		}
 		else // Basic
 		{
-			if (findCardType(1, lastCard.getSuit(), location))
+			if (findCardType(BasicP, lastCard.getSuit(), location))
 			{
 				return location;
 			}
