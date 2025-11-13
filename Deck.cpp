@@ -103,9 +103,12 @@ Card* Deck::drawTop()
 {
     if(cards.empty())
     {
+        if(playPile[0]->getRank()==-1)
+            playPile[0]->fixWildSuit(); //Return color to wild before shuffle
         cards= playPile;
         shuffle();
         playPile.clear();
+        playPile.push_back(drawTop());
     }
     Card* topCard = cards[0];
     cards.erase(cards.begin());
@@ -135,15 +138,20 @@ void Deck::startGame()
 bool Deck::onPlay(Card* c)
 {
     cout<<"Played Rank: "<<c->getRank()<<endl; //debug
-    cout<<"Played Suit: "<<c->getSuit()<<endl;
+    cout<<"Played Suit: "<<c->getSuit()<<endl; //debug
+    cout<<"Plus Card: "<<c->getPlus()<<endl; //debug
     cout<<"Top Rank: "<<playPile[0]->getRank()<<endl; //debug
-    cout<<"Top Suit: "<<playPile[0]->getSuit()<<endl; //debug
-    if((c->getRank()==playPile[0]->getRank())||(c->getSuit()==playPile[0]->getSuit()))
+    cout<<"Top Suit: "<<playPile[0]->getSuit()<<endl; //debu
+    cout<<"Plus Card: "<<playPile[0]->getPlus()<<endl;//debug
+    if(((c->getRank()==playPile[0]->getRank())&&(c->getPlus()==playPile[0]->getPlus())) //Check if plus card
+    ||
+    (c->getSuit()==playPile[0]->getSuit())) //Check Colors
     {
         cout<<"Return True"<<endl;
+        if(playPile[0]->getRank()==-1)
+            playPile[0]->fixWildSuit(); //Return color to wild once a card is played on top
         return true;
     }
     cout<<"Return False"<<endl;
     return false;
 }
-
