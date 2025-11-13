@@ -290,7 +290,7 @@ bool Player::findCardType(int type, int suit, int& spot)
 	return false; //Added so I can compile it change later
 }
 
-void Player::playCard(int c, Deck& d)
+void Player::playCard(int c, Deck& d, bool& reverse, bool& skip, bool& plus)
 {
 	Card* play = hand[c];
 	if(d.onPlay(play))
@@ -322,6 +322,50 @@ void Player::playCard(int c, Deck& d)
     	lastPlayedCard= play;
     	cout<<"Card was Played"<<endl;
 	}
+	else
+	{
+	    cout<<"Invalid Card"<<endl;
+	}
+}
+
+void Player::playTurn(bool& reverse, bool& skip, bool& plus, Deck& d)
+{
+    if (AiPlayer==false)
+    {
+        if(skip)
+            return;
+        if(plus)
+        {
+            bool checkForPlus= false;
+            for(Card* card: hand)
+            {
+                if (card->getPlus()==true)
+                {
+                    checkForPlus=true;
+                }
+            }
+            if (checkForPlus)
+            {
+                //player.showCurrentHand()
+                cout<<"What card would you like to play?"<<endl;
+            }
+            else
+            {
+                if (d.playPile[0]->getRank()==-1)
+                {
+                    giveCard(d);
+                    giveCard(d);
+                    giveCard(d);
+                    giveCard(d);
+                }
+                else
+                {
+                    giveCard(d);
+                    giveCard(d);
+                }
+            }
+        }
+    }
 }
 
 Player::~Player()
