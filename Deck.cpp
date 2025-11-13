@@ -103,12 +103,15 @@ Card* Deck::drawTop()
 {
     if(cards.empty())
     {
+        if(playPile.end() - playPile.begin() <= 1)
+            throw playPile.end() - playPile.begin();
         if(playPile[0]->getRank()==-1)
             playPile[0]->fixWildSuit(); //Return color to wild before shuffle
         cards= playPile;
         shuffle();
         playPile.clear();
         playPile.push_back(drawTop());
+        cout<<"Cards were empty"<<endl;
     }
     Card* topCard = cards[0];
     cards.erase(cards.begin());
@@ -119,13 +122,18 @@ Deck::~Deck()
 {
     for(Card* card: cards)
     {
+        cout<<"Deleted Rank: "<<card->getRank()<<endl; //debug
+        cout<<"Deleted Suit: "<<card->getSuit()<<endl; //debug
+        cout<<"Deleted Card: "<<card->getPlus()<<endl; //debug
         delete card;
     }
     for(Card* card: playPile)
     {
+        cout<<"playPile Rank: "<<card->getRank()<<endl; //debug
+        cout<<"playPile Suit: "<<card->getSuit()<<endl; //debug
+        cout<<"playPile Card: "<<card->getPlus()<<endl; //debug
         delete card;
     }
-    
 }
 
 void Deck::startGame()
@@ -141,7 +149,7 @@ bool Deck::onPlay(Card* c)
     cout<<"Played Suit: "<<c->getSuit()<<endl; //debug
     cout<<"Plus Card: "<<c->getPlus()<<endl; //debug
     cout<<"Top Rank: "<<playPile[0]->getRank()<<endl; //debug
-    cout<<"Top Suit: "<<playPile[0]->getSuit()<<endl; //debu
+    cout<<"Top Suit: "<<playPile[0]->getSuit()<<endl; //debug
     cout<<"Plus Card: "<<playPile[0]->getPlus()<<endl;//debug
     if(((c->getRank()==playPile[0]->getRank())&&(c->getPlus()==playPile[0]->getPlus())) //Check if plus card
     ||
