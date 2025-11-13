@@ -12,6 +12,7 @@ protected:
 	int rank; //-3,-2,-1, 0-9
 	int suit; //wild, red, green, yellow, blue
 public:
+    void fixWildSuit() {suit=-1;}
 	int getRank() { return rank; }
 	int getSuit() { return suit; }
 	virtual bool getPlus() { return false; }
@@ -31,29 +32,23 @@ class WildCard : public Card
 {
 private:
 	bool plus;
-	rank = -1;
-	suit = -1;
 	string chosenSuit;
 public:
-	WildCard(bool plus=false){this->plus = plus;}
+	WildCard(bool plus=false){this->plus = plus; rank=-1; suit=-1;}
 	bool getPlus() { return plus; }
 	string getChosenSuit() { return chosenSuit; }
 };
 
 class ReverseCard : public Card
 {
-private:
-	rank = -2;
 public:
-	ReverseCard(int suit){this->suit = suit;}
+	ReverseCard(int suit){this->suit = suit; rank = -2;}
 };
 
-class WildCard : public Card
+class SkipCard : public Card
 {
-private:
-	rank = -3;
 public:
-	SkipCard(int suit){this->suit = suit;}
+	SkipCard(int suit){this->suit = suit; rank = -3;}
 };
 
 class Deck
