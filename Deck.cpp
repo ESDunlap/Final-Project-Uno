@@ -120,18 +120,13 @@ Card* Deck::drawTop()
 
 Deck::~Deck()
 {
+    cout<<cards.end() - cards.begin();
     for(Card* card: cards)
     {
-        cout<<"Deleted Rank: "<<card->getRank()<<endl; //debug
-        cout<<"Deleted Suit: "<<card->getSuit()<<endl; //debug
-        cout<<"Deleted Card: "<<card->getPlus()<<endl; //debug
         delete card;
     }
     for(Card* card: playPile)
     {
-        cout<<"playPile Rank: "<<card->getRank()<<endl; //debug
-        cout<<"playPile Suit: "<<card->getSuit()<<endl; //debug
-        cout<<"playPile Card: "<<card->getPlus()<<endl; //debug
         delete card;
     }
 }
