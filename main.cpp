@@ -19,6 +19,15 @@ int main()
 	Player p;
 	newDeck.startGame();
 	p.giveCard(newDeck);
+	try
+	{
+	for(int i = 0;i<130;i++)
+	    newDeck.drawTop();
+	}
+	catch(long tooSmall)
+	{
+	    cout<<"Playpile and Deck are too small to continue the game"<<endl;
+	}
 	p.playCard(0, newDeck);
 	/*
 	newDeck.fillDeck();
