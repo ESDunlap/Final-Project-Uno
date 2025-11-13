@@ -26,8 +26,6 @@ public:
 	BasicCard(int, string, bool= false);
 	BasicCard(int, int, bool= false);
 	bool getPlus(){return plus;}
-
-	friend ostream& operator<<(ostream&, const BasicCard&);
 };
 
 class WildCard : public Card
@@ -39,24 +37,18 @@ public:
 	WildCard(bool plus=false){this->plus = plus; rank=-1; suit=-1;}
 	bool getPlus() { return plus; }
 	string getChosenSuit() { return chosenSuit; }
-
-	friend ostream& operator<<(ostream&, const WildCard&);
 };
 
 class ReverseCard : public Card
 {
 public:
 	ReverseCard(int suit){this->suit = suit; rank = -2;}
-
-	friend ostream& operator<<(ostream&, const ReverseCard&);
 };
 
 class SkipCard : public Card
 {
 public:
 	SkipCard(int suit){this->suit = suit; rank = -3;}
-
-	friend ostream& operator<<(ostream&, const SkipCard&);
 };
 
 class Deck
@@ -79,7 +71,3 @@ public:
 BasicCard* makeBasicCard(int rank, int suit, bool plus = false);
 
 WildCard* makeWildCard(bool plus = false);
-
-ReverseCard* makeReverseCard(int suit);
-
-SkipCard* makeSkipCard(int suit);
