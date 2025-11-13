@@ -295,6 +295,28 @@ void Player::playCard(int c, Deck& d)
 	Card* play = hand[c];
 	if(d.onPlay(play))
 	{
+	    switch(play->getRank())
+	    {
+	        case -1:
+	        {
+	            cout<<"Wildcard Played"<<endl; //debug
+	            break;
+	        }
+	        case -2:
+	        {
+	            cout<<"Reverse Played"<<endl; //debug
+	            break;
+	        }
+	        case -3:
+	        {
+	            cout<<"Skip Played"<<endl; //debug
+	            break;
+	        }
+	    }
+	    if(play->getPlus())
+	    {
+	        cout<<"Plus Played"<<endl; //debug
+	    }
     	hand.erase(hand.begin() + c);
     	size--;
     	lastPlayedCard= play;
