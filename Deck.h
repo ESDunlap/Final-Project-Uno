@@ -58,7 +58,6 @@ private:
 public:
 	vector<Card*> cards;
 	vector<Card*> playPile;
-    friend class Card; //fix later
 	void fillDeck();
 	void shuffle();
 	void startGame();
