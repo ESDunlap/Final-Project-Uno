@@ -65,9 +65,25 @@ int main()
     	while (!someoneWon)
     	{
     	    if(reverse)
+    	    {
     	        currentPlayer = (currentPlayer+1) % (numAi+1);
+    	        if (currentPlayer==0)
+    	        {
+    	        cout<<"Next Player Hand Size: "<<allPlayers[3].getSize()<<endl;
+    	        cout<<"Across Player Hand Size: "<<allPlayers[2].getSize()<<endl;
+    	        cout<<"Previous Player Hand Size: "<<allPlayers[1].getSize()<<endl;
+    	        }
+    	    }
     	    else
+    	    {
     	        currentPlayer = (currentPlayer-1) % (numAi+1);
+    	        if (currentPlayer==0)
+    	        {
+    	        cout<<"Next Player Hand Size: "<<allPlayers[3].getSize()<<endl;
+    	        cout<<"Across Player Hand Size: "<<allPlayers[2].getSize()<<endl;
+    	        cout<<"Previous Player Hand Size: "<<allPlayers[1].getSize()<<endl;
+    	        }
+    	    }
     	    allPlayers[currentPlayer].playTurn(reverse, skip, plus, newDeck);
     	    if(allPlayers[currentPlayer].getSize() == 0)
     	        someoneWon=true;

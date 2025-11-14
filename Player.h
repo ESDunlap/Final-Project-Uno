@@ -28,7 +28,7 @@ public:
 	void giveCard(Deck&);
 	int decideCard(Card lastCard, Player& nextPlayer, Player& oppositePlayer, Player& previousPlayer);
 	bool findCardType(int type, int suit, int& spot);
-	void playCard(int, Deck&, bool&, bool&, bool&);
+	bool playCard(int, Deck&, bool&, bool&, bool&);
 	void playTurn(bool&, bool&, bool&, Deck&);
 	~Player();
 };
