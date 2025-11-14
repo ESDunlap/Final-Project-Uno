@@ -22,6 +22,8 @@ private:
 public: 
     Card* lastPlayedCard;
 	int getSize() { return size; }
+	vector<Card*> getHand() { return hand; }
+	Card* getCard(int spot) { return hand[spot]; }
 	void setAi() { AiPlayer=true; }
 	void giveCard(Deck&);
 	int decideCard(Card lastCard, Player& nextPlayer, Player& oppositePlayer, Player& previousPlayer);

@@ -16,6 +16,7 @@ public:
 	int getRank() { return rank; }
 	int getSuit() { return suit; }
 	virtual bool getPlus() { return false; }
+	virtual string getFileName() { return (string)"File.txt"; }
 };
 
 class BasicCard : public Card

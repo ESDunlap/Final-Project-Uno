@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream> //Generic c++
+#include <fstream>
 
 #include "Deck.h"
 

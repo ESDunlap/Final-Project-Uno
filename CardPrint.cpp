@@ -1,5 +1,6 @@
 #include <iostream> //Generic c++
 #include <fstream> // Allows file reading
+#include <limits> // Credit to Google "fstream c++ skip lines"
 #include <string> //Allows use of string functions
 #include <climits> //Adds INT_MAX
 #include <iomanip> //Input Output additions
@@ -67,7 +68,7 @@ string suitColor(int suit)
 string BasicCard::getFileName()
 {
     string file("");
-    string file = "Basic";
+    file += (string)"Basic";
     file += to_string(rank);
     if (plus) { file += (string)"P.txt"; }
     else { file += (string)".txt"; }
@@ -82,7 +83,7 @@ friend ostream& operator<<(ostream& os, const BasicCard& card)
 string WildCard::getFileName()
 {
     string file("");
-    string file = "Wild";
+    file += (string)"Wild";
     if (plus) { file += (string)"P.txt"; }
     else { file += (string)".txt"; }
     return file;
@@ -93,69 +94,89 @@ friend ostream& operator<<(ostream& os, const WildCard& card)
     os << suitColor(card.getSuit()) << printAscii(card.getFileName()) << endl << "\e[0m";
 }
 
+string ReverseCard::getFileName()
+{
+    string file("");
+    file += (string)"Reverse";
+    file += (string)".txt";
+    return file;
+}
+
 friend ostream& operator<<(ostream& os, const ReverseCard& card)
 {
-    string art = "Reverse";
-    art += (string)".txt";
-    os << suitColor(card.getSuit()) << printAscii(art) << endl << "\e[0m";
+    os << suitColor(card.getSuit()) << printAscii(card.getFileName()) << endl << "\e[0m";
+}
+
+string SkipCard::getFileName()
+{
+    string file("");
+    file += (string)"Skip";
+    file += (string)".txt";
+    return file;
 }
 
 friend ostream& operator<<(ostream& os, const SkipCard& card)
 {
-    string art = "Skip";
-    art += (string)".txt";
-    os << suitColor(card.getSuit()) << printAscii(art) << endl << "\e[0m";
+    os << suitColor(card.getSuit()) << printAscii(card.getFileName()) << endl << "\e[0m";
 }
 
-string getMultiFileContents(int size, ifstream& Files[size], int& suits[size])
+string getMultiFileContents(int size, string& Files[size], int& suits[size])
 {
     string Lines = "";        //All lines
 
     for (int file = 0; file < size; file++)
     {
-        if (!Files[file])                      //Check if everything is good
+        ifstream Reader(Files[file]);
+        if (!Reader)                      //Check if everything is good
         {
             return "ERROR File does not exist.";    //Return error
         }
     }
 
     bool loop = true;
+    int loops = 0;
     while (loop)
     {
         string TempLine("");                //Temp line
         for (int file = 0; file < size; file++)
         {
             string temp;
-            getline(Files[file], temp);        //Get temp line
+            ifstream Reader(Files[file]);
+            for (int skip = 0; skip < loops; skip++)
+            {
+                Reader.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
+            getline(Reader, temp);        //Get temp line
             TempLine += suitColor(suits[file]) + temp + (string)"   \e[0m";
             if (!Files[file].good())                      //Check if files are empty
             {
                 loop = false;    //Stop loop
             }
+            Reader.close();
         }
         TempLine += "\n";               //Add newline character
         Lines += TempLine;              //Add newline
-        
+        loops++;
     }
     return Lines;
 }
 
 friend ostream& operator<<(ostream& os, const Player& p)
 {
-    ifstream Files[p.getSize()];
+
+    string Art;
+    string Files[p.getSize()];
+    int suits[p.getSize()];
     for (int file = 0; file < p.getSize(); file++)
     {
-        ifstream Reader();
-        Files[file] = Reader;    //Open files
+        Card card = p.getCard(file);
+        string fName = card.getFileName();
+        Files[file] = fName;    //Set files
+
+        suits[file] = card.getSuit();
     }
 
-    string Art = getMultiFileContents(p.getSize(), Files, suits);  //Get all Art
-
-
-    for (int file = 0; file < p.getSize(); file++)
-    {
-        Files[file].close();    //Close files
-    }
+    Art = getMultiFileContents(p.getSize(), Files, suits);  //Get all Art
 
     return Art;     //Return Art
 }
