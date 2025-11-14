@@ -290,7 +290,7 @@ bool Player::findCardType(int type, int suit, int& spot)
 	return false; //Added so I can compile it change later
 }
 
-void Player::playCard(int c, Deck& d, bool& reverse, bool& skip, bool& plus)
+bool Player::playCard(int c, Deck& d, bool& reverse, bool& skip, bool& plus)
 {
 	Card* play = hand[c];
 	if(d.onPlay(play))
@@ -305,11 +305,13 @@ void Player::playCard(int c, Deck& d, bool& reverse, bool& skip, bool& plus)
 	        case -2:
 	        {
 	            cout<<"Reverse Played"<<endl; //debug
+	            reverse=true;
 	            break;
 	        }
 	        case -3:
 	        {
 	            cout<<"Skip Played"<<endl; //debug
+	            skip=true;
 	            break;
 	        }
 	    }
@@ -321,10 +323,12 @@ void Player::playCard(int c, Deck& d, bool& reverse, bool& skip, bool& plus)
     	size--;
     	lastPlayedCard= play;
     	cout<<"Card was Played"<<endl;
+    	return true;
 	}
 	else
 	{
 	    cout<<"Invalid Card"<<endl;
+	    return false;
 	}
 }
 
@@ -333,10 +337,13 @@ void Player::playTurn(bool& reverse, bool& skip, bool& plus, Deck& d)
     if (AiPlayer==false)
     {
         if(skip)
+        {
+            skip=false;
             return;
+        }
         if(plus)
         {
-            bool checkForPlus= false;
+            /*bool checkForPlus= false;
             for(Card* card: hand)
             {
                 if (card->getPlus()==true)
@@ -348,22 +355,39 @@ void Player::playTurn(bool& reverse, bool& skip, bool& plus, Deck& d)
             {
                 //player.showCurrentHand()
                 cout<<"What card would you like to play?"<<endl;
+            }*/
+            if (d.playPile[0]->getRank()==-1)
+            {
+                giveCard(d);
+                giveCard(d);
+                giveCard(d);
+                giveCard(d);
             }
             else
             {
-                if (d.playPile[0]->getRank()==-1)
-                {
-                    giveCard(d);
-                    giveCard(d);
-                    giveCard(d);
-                    giveCard(d);
-                }
-                else
-                {
-                    giveCard(d);
-                    giveCard(d);
-                }
+                giveCard(d);
+                giveCard(d);
             }
+        }
+        for(int i = 0;i < size;i++)
+        {
+            cout<<"Rank: "<<hand[i]->getRank()<<endl;
+            cout<<"Suit: "<<hand[i]->getSuit()<<endl; //Replace these later
+            cout<<"Plus: "<<hand[i]->getPlus()<<endl;
+        }
+        cout<<"Top Rank: "<<d.playPile[0]->getRank()<<endl; //debug
+        cout<<"Top Suit: "<<d.playPile[0]->getSuit()<<endl; //debug
+        cout<<"Plus Card: "<<d.playPile[0]->getPlus()<<endl;//debug
+        int playedCardNum;
+        bool cardPlayed=false;
+        cout<<"Which card would you like to play? (Enter -1 to draw)"<<endl;
+        while(!cardPlayed)
+        {
+            cin>>playedCardNum;
+            if(playedCardNum==-1)
+                giveCard(d);
+            else if(playCard(playedCardNum, d, reverse, skip, plus))
+                cardPlayed=true;
         }
     }
 }
