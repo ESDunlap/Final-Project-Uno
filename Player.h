@@ -26,9 +26,9 @@ public:
 	Card* getCard(int spot) { return hand[spot]; }
 	void setAi() { AiPlayer=true; }
 	void giveCard(Deck&);
-	int decideCard(Card lastCard, Player& nextPlayer, Player& oppositePlayer, Player& previousPlayer);
+	int decideCard(Card* lastCard, int nextPlayer, int oppositePlayer, int previousPlayer);
 	bool findCardType(int type, int suit, int& spot);
 	bool playCard(int, Deck&, bool&, bool&, bool&);
-	void playTurn(bool&, bool&, bool&, Deck&);
+	void playTurn(bool&, bool&, bool&, Deck&, int, int, int);
 	~Player();
 };
