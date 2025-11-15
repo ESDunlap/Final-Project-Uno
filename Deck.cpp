@@ -110,7 +110,7 @@ Card* Deck::drawTop()
         cards= playPile;
         shuffle();
         playPile.clear();
-        playPile.push_back(drawTop());
+        playPile.insert(playPile.begin(), drawTop());
         cout<<"Cards were empty"<<endl;
     }
     Card* topCard = cards[0];
@@ -135,7 +135,7 @@ void Deck::startGame()
 {
     fillDeck();
     shuffle();
-    playPile.push_back(drawTop());
+    playPile.insert(playPile.begin(), drawTop());
 }
 
 bool Deck::onPlay(Card* c)
@@ -153,6 +153,7 @@ bool Deck::onPlay(Card* c)
         cout<<"Return True"<<endl;
         if(playPile[0]->getRank()==-1)
             playPile[0]->fixWildSuit(); //Return color to wild once a card is played on top
+        playPile.insert(playPile.begin(), c);
         return true;
     }
     cout<<"Return False"<<endl;
