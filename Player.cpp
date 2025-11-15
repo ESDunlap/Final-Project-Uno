@@ -65,22 +65,22 @@ void Player::giveCard(Deck& d)
 										3+			{basic, skip, basic+, wild, rev, wild+}
 
 */
-int Player::decideCard(Card lastCard, Player& nextPlayer, Player& crossPlayer, Player& previousPlayer)
+int Player::decideCard(Card* lastCard, int nextPlayer, int crossPlayer, int previousPlayer)
 {
 	int location = -1;
 	int priority[6] = { 3, 3, 3, 3, 3, 3 }; //Moved as it said it was out of scope before
-	if (lastCard.getPlus()) // + Check
+	if (lastCard->getPlus()) // + Check
 	{
-		if (lastCard.getRank() == Wild)// Wild Check
+		if (lastCard->getRank() == Wild)// Wild Check
 		{
-			if (findCardType(WildP, lastCard.getSuit(), location))
+			if (findCardType(WildP, lastCard->getSuit(), location))
 			{
 				return location;
 			}
 		}
 		else // Basic
 		{
-			if (findCardType(BasicP, lastCard.getSuit(), location))
+			if (findCardType(BasicP, lastCard->getSuit(), location))
 			{
 				return location;
 			}
@@ -88,14 +88,14 @@ int Player::decideCard(Card lastCard, Player& nextPlayer, Player& crossPlayer, P
 	}
 	else
 	{
-		if (nextPlayer.getSize()<=2) // Next Player On Low Cards
+		if (nextPlayer<=2) // Next Player On Low Cards
 		{
 			priority[0] = BasicP;
 			priority[5] = Basic;
-			if (previousPlayer.getSize()<=2) // Previous Player On Low Cards
+			if (previousPlayer<=2) // Previous Player On Low Cards
 			{
 				priority[4] = Reverse;
-				if (crossPlayer.getSize()<=2) // Cross Player On Low Cards
+				if (crossPlayer<=2) // Cross Player On Low Cards
 				{
 					priority[1] = WildP;
 					priority[2] = Wild;
@@ -110,7 +110,7 @@ int Player::decideCard(Card lastCard, Player& nextPlayer, Player& crossPlayer, P
 			}
 			else // Previous Player Not On Low Cards
 			{
-				if (crossPlayer.getSize()<=2) // Cross Player On Low Cards
+				if (crossPlayer<=2) // Cross Player On Low Cards
 				{
 					priority[1] = Reverse;
 					priority[2] = Wild;
@@ -119,7 +119,7 @@ int Player::decideCard(Card lastCard, Player& nextPlayer, Player& crossPlayer, P
 				}
 				else // Cross Player Not On Low Cards
 				{
-					if (lastCard.getRank() == Reverse) // Last Card Was Reverse
+					if (lastCard->getRank() == Reverse) // Last Card Was Reverse
 					{
 						priority[1] = Reverse;
 						priority[2] = Skip;
@@ -137,10 +137,10 @@ int Player::decideCard(Card lastCard, Player& nextPlayer, Player& crossPlayer, P
 		else // Next Player Not On Low Cards
 		{
 			priority[0] = Basic;
-			if (previousPlayer.getSize()<=2) // Previous Player On Low Cards
+			if (previousPlayer<=2) // Previous Player On Low Cards
 			{
 				priority[5] = Reverse;
-				if (crossPlayer.getSize()<=2) // Cross Player On Low Cards
+				if (crossPlayer<=2) // Cross Player On Low Cards
 				{
 					priority[1] = BasicP;
 					priority[2] = Wild;
@@ -149,7 +149,7 @@ int Player::decideCard(Card lastCard, Player& nextPlayer, Player& crossPlayer, P
 				}
 				else // Cross Player Not On Low Cards
 				{
-					if (lastCard.getRank() == Skip) // Last Card Was Skip
+					if (lastCard->getRank() == Skip) // Last Card Was Skip
 					{
 						priority[1] = Skip;
 						priority[2] = BasicP;
@@ -166,9 +166,9 @@ int Player::decideCard(Card lastCard, Player& nextPlayer, Player& crossPlayer, P
 			}
 			else // Previous Player Not On Low Cards
 			{
-				if (crossPlayer.getSize()<=2) // Cross Player On Low Cards
+				if (crossPlayer<=2) // Cross Player On Low Cards
 				{
-					if (lastCard.getRank() == Reverse) // Last Card Was Reverse
+					if (lastCard->getRank()== Reverse) // Last Card Was Reverse
 					{
 						priority[1] = Reverse;
 						priority[2] = BasicP;
@@ -184,14 +184,14 @@ int Player::decideCard(Card lastCard, Player& nextPlayer, Player& crossPlayer, P
 				}
 				else // Cross Player Not On Low Cards
 				{
-					if (lastCard.getRank() == Reverse) // Last Card Was Reverse
+					if (lastCard->getRank() == Reverse) // Last Card Was Reverse
 					{
 						priority[1] = Reverse;
 						priority[2] = BasicP;
 						priority[3] = Wild;
 						priority[4] = Skip;
 					}
-					else if(lastCard.getRank() == Skip)
+					else if(lastCard->getRank() == Skip)
 					{
 						priority[1] = Skip;
 						priority[2] = BasicP;
@@ -212,7 +212,7 @@ int Player::decideCard(Card lastCard, Player& nextPlayer, Player& crossPlayer, P
 	}
 	for (int i = 0; i < 6; i++)
 	{
-		if (findCardType(priority[i], lastCard.getSuit(), location))
+		if (findCardType(priority[i], lastCard->getSuit(), location))
 		{
 			return location;
 		}
@@ -293,35 +293,34 @@ bool Player::findCardType(int type, int suit, int& spot)
 bool Player::playCard(int c, Deck& d, bool& reverse, bool& skip, bool& plus)
 {
 	Card* play = hand[c];
-	switch(play->getRank())
-	{
-	case -1:
-	{
-		cout<<"Wildcard Played"<<endl; //debug
-		break;
-	}
-	case -2:
-	{
-		cout<<"Reverse Played"<<endl; //debug
-		reverse=true;
-		break;
-	}
-	case -3:
-	{
-		cout<<"Skip Played"<<endl; //debug
-		skip=true;
-		break;
-	}
-	}
 	if(d.onPlay(play))
 	{
+		switch(play->getRank())
+		{
+		case -1:
+		{
+			cout<<"Wildcard Played"<<endl; //debug
+			break;
+		}
+		case -2:
+		{
+			cout<<"Reverse Played"<<endl; //debug
+			reverse=true;
+			break;
+		}
+		case -3:
+		{
+			cout<<"Skip Played"<<endl; //debug
+			skip=true;
+			break;
+		}
+		}
 		if(play->getPlus())
 		{
 			cout<<"Plus Played"<<endl; //debug
 		}
-		hand.erase(hand.begin() + c);
+		hand.erase(hand.begin() + c); //Causing some kind of error
 		size--;
-		lastPlayedCard= play;
 		cout<<"Card was Played"<<endl;
 		return true;
 	}
@@ -332,14 +331,15 @@ bool Player::playCard(int c, Deck& d, bool& reverse, bool& skip, bool& plus)
 	}
 }
 
-void Player::playTurn(bool& reverse, bool& skip, bool& plus, Deck& d)
+void Player::playTurn(bool& reverse, bool& skip, bool& plus, Deck& d,
+                      int nextPlayer, int crossPlayer, int previousPlayer)
 {
 	if(skip)
 	{
 		skip=false;
 		return;
 	}
-	if(plus)
+	else if(plus)
 	{
 		if (d.playPile[0]->getRank()==-1)
 		{
@@ -355,26 +355,30 @@ void Player::playTurn(bool& reverse, bool& skip, bool& plus, Deck& d)
 		}
 		return;
 	}
-	if (AiPlayer==false)
+	else if (AiPlayer==false)
 	{
 		for(int i = 0; i < size; i++)
 		{
-		    cout<<"Card: "<<i<<endl;
+			cout<<"Card: "<<i<<endl;
+			cout<<"test"<<endl;
+			cout<<hand[i]<<endl;
+			cout<<"test2"<<endl;
 			cout<<"Rank: "<<hand[i]->getRank()<<endl;
 			cout<<"Suit: "<<hand[i]->getSuit()<<endl; //Replace these later
 			cout<<"Plus: "<<hand[i]->getPlus()<<endl<<endl;
-			
 		}
 		cout<<"Top Rank: "<<d.playPile[0]->getRank()<<endl; //debug
 		cout<<"Top Suit: "<<d.playPile[0]->getSuit()<<endl; //debug
 		cout<<"Plus Card: "<<d.playPile[0]->getPlus()<<endl;//debug
 		int playedCardNum;
 		bool cardPlayed=false;
-		cout<<"Which card would you like to play? (Enter -1 to draw)"<<endl;
 		while(!cardPlayed)
 		{
+			cout<<"Which card would you like to play? (Enter -1 to draw)"<<endl;
 			cin>>playedCardNum;
-			if(playedCardNum==-1)
+			if (playedCardNum>=size||playedCardNum<-1)
+			    cout<<"Invalid Card/Input"<<endl;
+			else if(playedCardNum==-1)
 				giveCard(d);
 			else if(playCard(playedCardNum, d, reverse, skip, plus))
 				cardPlayed=true;
@@ -382,18 +386,19 @@ void Player::playTurn(bool& reverse, bool& skip, bool& plus, Deck& d)
 	}
 	else
 	{
-	    /*
-	    int playedCardNum;
-	    bool cardPlayed=false;
-	    while(!cardPlayed)
+		int playedCardNum;
+		bool cardPlayed=false;
+		while(!cardPlayed)
 		{
+			playedCardNum= decideCard(d.playPile[0], nextPlayer, crossPlayer, previousPlayer);
 			if(playedCardNum==-1)
 				giveCard(d);
-			else if(playCard(playedCardNum, d, reverse, skip, plus))
+			else
+			{
+				playCard(playedCardNum, d, reverse, skip, plus);
 				cardPlayed=true;
+			}
 		}
-		Not Finished yet
-		*/ 
 	}
 }
 
