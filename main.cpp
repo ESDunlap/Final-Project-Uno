@@ -60,6 +60,9 @@ int main()
 	bool reverse= false;
 	bool skip= false;
 	bool plus= false;
+	int nextPlayerSize;
+	int crossPlayerSize;
+	int previousPlayerSize;
 	try
 	{
     	while (!someoneWon)
@@ -67,24 +70,30 @@ int main()
     	    if(reverse)
     	    {
     	        currentPlayer = (currentPlayer+1) % (numAi+1);
-    	        if (currentPlayer==0)
-    	        {
-    	        cout<<"Next Player Hand Size: "<<allPlayers[3].getSize()<<endl;
-    	        cout<<"Across Player Hand Size: "<<allPlayers[2].getSize()<<endl;
-    	        cout<<"Previous Player Hand Size: "<<allPlayers[1].getSize()<<endl;
-    	        }
+    	        nextPlayerSize= allPlayers[(currentPlayer+1)%4].getSize();
+    	        crossPlayerSize= allPlayers[(currentPlayer+2)%4].getSize();
+    	        previousPlayerSize= allPlayers[(currentPlayer+3)%4].getSize();
     	    }
     	    else
     	    {
     	        currentPlayer = (currentPlayer-1) % (numAi+1);
-    	        if (currentPlayer==0)
-    	        {
-    	        cout<<"Next Player Hand Size: "<<allPlayers[3].getSize()<<endl;
-    	        cout<<"Across Player Hand Size: "<<allPlayers[2].getSize()<<endl;
-    	        cout<<"Previous Player Hand Size: "<<allPlayers[1].getSize()<<endl;
-    	        }
+    	        nextPlayerSize= allPlayers[(currentPlayer+3)%4].getSize();
+    	        crossPlayerSize= allPlayers[(currentPlayer+2)%4].getSize();
+    	        previousPlayerSize= allPlayers[(currentPlayer+1)%4].getSize();
     	    }
-    	    allPlayers[currentPlayer].playTurn(reverse, skip, plus, newDeck);
+    	    if (currentPlayer==0)
+    	    {
+    	    cout<<"Next Player Hand Size: "<<nextPlayerSize<<endl;
+            cout<<"Across Player Hand Size: "<<crossPlayerSize<<endl;
+	        cout<<"Previous Player Hand Size: "<<previousPlayerSize<<endl;
+	        }
+	        else
+	        {
+	            cout<<"AI turn: "<<endl;
+	        }
+    	    allPlayers[currentPlayer].playTurn(reverse, skip, plus, newDeck,
+    	                                       nextPlayerSize, crossPlayerSize,
+    	                                       previousPlayerSize);
     	    if(allPlayers[currentPlayer].getSize() == 0)
     	        someoneWon=true;
     	}
