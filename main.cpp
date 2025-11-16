@@ -11,36 +11,14 @@
 #include "Deck.h"
 #include "Player.h"
 
-int getValidInt(string message)
-{
-    int getInt;
-    cout<<message<<endl;
-    cin>>getInt;
-    while(!cin)
-    {
-        cin.clear();
-        cin.ignore(INT_MAX, '\n');
-        cout<<"Error: Not an Int"<<endl;
-        cin>>getInt;
-    }
-    return getInt;
-}
-
-
 int main()
 {
     srand(time(0));
+    string possibleNames[10]= {"Erik", "Kaeden", "Amanda", "Davis", "Tim",
+                               "Jack", "Willow", "Wanda", "Penny", "Samantha"};
     bool someoneWon;
 	Deck newDeck;
 	newDeck.startGame();
-	/*
-	int numAi= getValidInt("How many AI's will you be fighting? (1-3): ");
-	while (numAi > 3 || numAi < 1)
-	{
-	    cout<<"Error: Outside of Range"<<endl;
-	    numAi= getValidInt("How many AI's will you be fighting? (1-3): ");
-	}
-	*/
 	int numAi=3;
 	int startCards= getValidInt("How many cards will a player start with? (3-10):");
 	while (startCards > 10 || startCards < 3)
@@ -49,10 +27,15 @@ int main()
 	    startCards= getValidInt("How many cards will a player start with? (3-10):");
 	}
 	Player allPlayers[numAi+1];
+	cout<<"What is your name?"<<endl;
+	cin>>allPlayers[0].playerName;
 	for(int i = 0; i<=numAi;i++)
 	{
 	    if (i!=0)
+	    {
 	        allPlayers[i].setAi();
+	        allPlayers[i].playerName=possibleNames[rand()%10];
+	    }
 	    for(int v = 0; v<startCards; v++)
 	        allPlayers[i].giveCard(newDeck);
 	}
@@ -76,7 +59,7 @@ int main()
     	    }
     	    else
     	    {
-    	        currentPlayer = (currentPlayer-1) % (numAi+1);
+    	        currentPlayer = (currentPlayer+3) % (numAi+1);
     	        nextPlayerSize= allPlayers[(currentPlayer+3)%4].getSize();
     	        crossPlayerSize= allPlayers[(currentPlayer+2)%4].getSize();
     	        previousPlayerSize= allPlayers[(currentPlayer+1)%4].getSize();
@@ -87,10 +70,7 @@ int main()
             cout<<"Across Player Hand Size: "<<crossPlayerSize<<endl;
 	        cout<<"Previous Player Hand Size: "<<previousPlayerSize<<endl;
 	        }
-	        else
-	        {
-	            cout<<"AI turn: "<<endl;
-	        }
+	        cout<<allPlayers[currentPlayer].playerName<<" turn: "<<endl;
     	    allPlayers[currentPlayer].playTurn(reverse, skip, plus, newDeck,
     	                                       nextPlayerSize, crossPlayerSize,
     	                                       previousPlayerSize);
