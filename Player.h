@@ -19,7 +19,8 @@ private:
 	vector<Card*> hand;
 	int size = 0;
 	bool AiPlayer=false;
-public: 
+public:
+    string playerName;
     Card* lastPlayedCard;
 	int getSize() { return size; }
 	vector<Card*> getHand() { return hand; }
