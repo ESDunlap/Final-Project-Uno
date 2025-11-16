@@ -81,3 +81,5 @@ WildCard* makeWildCard(bool plus = false);
 ReverseCard* makeReverseCard(int suit);
 
 SkipCard* makeSkipCard(int suit);
+
+int getValidInt(string message);
