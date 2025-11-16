@@ -67,7 +67,7 @@ int main()
 	{
     	while (!someoneWon)
     	{
-    	    if(reverse)
+    	    if(!reverse)
     	    {
     	        currentPlayer = (currentPlayer+1) % (numAi+1);
     	        nextPlayerSize= allPlayers[(currentPlayer+1)%4].getSize();
