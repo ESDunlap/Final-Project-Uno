@@ -63,6 +63,7 @@ string suitColor(int suit)
         return "\e[0;34m";
         break;
     }
+    return "\e[0m";
 }
 
 string BasicCard::getFileName() const
@@ -124,11 +125,11 @@ ostream& operator<<(ostream& os, const SkipCard& card)
     return os;
 }
 
-string getMultiFileContents(int size, string& Files[size], int& suits[size])
+string getMultiFileContents(vector<string> Files, vector<int> suits)
 {
     string Lines = "";        //All lines
 
-    for (int file = 0; file < size; file++)
+    for (int file = 0; file < Files.size(); file++)
     {
         ifstream Reader(Files[file]);
         if (!Reader)                      //Check if everything is good
@@ -142,7 +143,7 @@ string getMultiFileContents(int size, string& Files[size], int& suits[size])
     while (loop)
     {
         string TempLine("");                //Temp line
-        for (int file = 0; file < size; file++)
+        for (int file = 0; file < Files.size(); file++)
         {
             string temp;
             ifstream Reader(Files[file]);
@@ -152,7 +153,7 @@ string getMultiFileContents(int size, string& Files[size], int& suits[size])
             }
             getline(Reader, temp);        //Get temp line
             TempLine += suitColor(suits[file]) + temp + (string)"   \e[0m";
-            if (!Files[file].good())                      //Check if files are empty
+            if (!Reader.good())                      //Check if files are empty
             {
                 loop = false;    //Stop loop
             }
@@ -169,18 +170,18 @@ ostream& operator<<(ostream& os, const Player& p)
 {
 
     string Art;
-    string Files[p.getSize()];
-    int suits[p.getSize()];
+    vector<string> Files;
+    vector<int> suits;
     for (int file = 0; file < p.getSize(); file++)
     {
-        Card card = p.getCard(file);
-        string fName = card.getFileName();
-        Files[file] = fName;    //Set files
+        Card* card = p.getCard(file);
+        string fName = card->getFileName();
+        Files.push_back(fName);    //Set files
 
-        suits[file] = card.getSuit();
+        suits.push_back(card->getSuit());
     }
 
-    Art = getMultiFileContents(p.getSize(), Files, suits);  //Get all Art
+    Art = getMultiFileContents(Files, suits);  //Get all Art
 
     os << Art;
 
