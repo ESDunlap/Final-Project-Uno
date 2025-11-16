@@ -22,9 +22,9 @@ private:
 public:
     string playerName;
     Card* lastPlayedCard;
-	int getSize() { return size; }
-	vector<Card*> getHand() { return hand; }
-	Card* getCard(int spot) { return hand[spot]; }
+	int getSize() const { return size; }
+	vector<Card*> getHand() const { return hand; }
+	Card* getCard(int spot) const { return hand[spot]; }
 	void setAi() { AiPlayer=true; }
 	void giveCard(Deck&);
 	int decideCard(Card* lastCard, int nextPlayer, int oppositePlayer, int previousPlayer);
