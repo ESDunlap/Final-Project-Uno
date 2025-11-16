@@ -69,6 +69,7 @@ int Player::decideCard(Card* lastCard, int nextPlayer, int crossPlayer, int prev
 {
 	int location = -1;
 	int priority[6] = { 3, 3, 3, 3, 3, 3 }; //Moved as it said it was out of scope before
+	/*
 	if (lastCard->getPlus()) // + Check
 	{
 		if (lastCard->getRank() == Wild)// Wild Check
@@ -85,8 +86,8 @@ int Player::decideCard(Card* lastCard, int nextPlayer, int crossPlayer, int prev
 				return location;
 			}
 		}
-	}
-	else
+	}*/
+	if(true)
 	{
 		if (nextPlayer<=2) // Next Player On Low Cards
 		{
@@ -217,6 +218,7 @@ int Player::decideCard(Card* lastCard, int nextPlayer, int crossPlayer, int prev
 			return location;
 		}
 	}
+	cout<<"No Valid Card"<<endl;
 	return -1; //Draw
 }
 
@@ -299,29 +301,51 @@ bool Player::playCard(int c, Deck& d, bool& reverse, bool& skip, bool& plus)
 		{
 		case -1:
 		{
-			cout<<"Wildcard Played"<<endl; //debug
+			int newColor;
+			bool colorChosen=false;
+			if(!AiPlayer)
+			{
+				while(!colorChosen)
+				{
+					cout<<"What color are you playing it as?"<<endl;
+					cout<<"(1 Red, 2 Green, 3 Yellow, 4 Blue)"<<endl;
+					newColor=getValidInt("What color are you playing it as?");
+					if(newColor<5 && newColor>0)
+					{
+						play->changeWild(newColor);
+						colorChosen=true;
+					}
+					else
+					{
+						cout<<"Invalid Input"<<endl;
+					}
+				}
+			}
+			else
+			{
+			    colorChosen=rand() % 4 + 1;
+			    play->changeWild(colorChosen);
+			}
 			break;
 		}
 		case -2:
 		{
-			cout<<"Reverse Played"<<endl; //debug
+			cout<<"Turn Order Reversed!"<<endl;
 			reverse=true;
 			break;
 		}
 		case -3:
 		{
-			cout<<"Skip Played"<<endl; //debug
 			skip=true;
 			break;
 		}
 		}
 		if(play->getPlus())
 		{
-			cout<<"Plus Played"<<endl; //debug
+			plus=true;
 		}
-		hand.erase(hand.begin() + c); //Causing some kind of error
+		hand.erase(hand.begin() + c);
 		size--;
-		cout<<"Card was Played"<<endl;
 		return true;
 	}
 	else
@@ -341,6 +365,7 @@ void Player::playTurn(bool& reverse, bool& skip, bool& plus, Deck& d,
 	}
 	else if(plus)
 	{
+	    cout<<"Forced to Draw"<<endl;
 		if (d.playPile[0]->getRank()==-1)
 		{
 			giveCard(d);
@@ -353,6 +378,7 @@ void Player::playTurn(bool& reverse, bool& skip, bool& plus, Deck& d,
 			giveCard(d);
 			giveCard(d);
 		}
+		plus=false;
 		return;
 	}
 	else if (AiPlayer==false)
@@ -360,9 +386,6 @@ void Player::playTurn(bool& reverse, bool& skip, bool& plus, Deck& d,
 		for(int i = 0; i < size; i++)
 		{
 			cout<<"Card: "<<i<<endl;
-			cout<<"test"<<endl;
-			cout<<hand[i]<<endl;
-			cout<<"test2"<<endl;
 			cout<<"Rank: "<<hand[i]->getRank()<<endl;
 			cout<<"Suit: "<<hand[i]->getSuit()<<endl; //Replace these later
 			cout<<"Plus: "<<hand[i]->getPlus()<<endl<<endl;
@@ -374,10 +397,9 @@ void Player::playTurn(bool& reverse, bool& skip, bool& plus, Deck& d,
 		bool cardPlayed=false;
 		while(!cardPlayed)
 		{
-			cout<<"Which card would you like to play? (Enter -1 to draw)"<<endl;
-			cin>>playedCardNum;
+			playedCardNum= getValidInt("Which card would you like to play? (Enter -1 to draw)");
 			if (playedCardNum>=size||playedCardNum<-1)
-			    cout<<"Invalid Card/Input"<<endl;
+				cout<<"Invalid Card/Input"<<endl;
 			else if(playedCardNum==-1)
 				giveCard(d);
 			else if(playCard(playedCardNum, d, reverse, skip, plus))
@@ -393,9 +415,8 @@ void Player::playTurn(bool& reverse, bool& skip, bool& plus, Deck& d,
 			playedCardNum= decideCard(d.playPile[0], nextPlayer, crossPlayer, previousPlayer);
 			if(playedCardNum==-1)
 				giveCard(d);
-			else
+			else if(playCard(playedCardNum, d, reverse, skip, plus))
 			{
-				playCard(playedCardNum, d, reverse, skip, plus);
 				cardPlayed=true;
 			}
 		}
