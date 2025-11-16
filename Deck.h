@@ -15,6 +15,7 @@ public:
     void fixWildSuit() {suit=-1;}
 	int getRank() { return rank; }
 	int getSuit() { return suit; }
+	virtual void changeWild(int newSuit){};
 	virtual bool getPlus() { return false; }
 	virtual string getFileName() { return (string)"File.txt"; }
 };
@@ -36,6 +37,7 @@ private:
 	string chosenSuit;
 public:
 	WildCard(bool plus=false){this->plus = plus; rank=-1; suit=-1;}
+	void changeWild(int newSuit) {suit=newSuit;}
 	bool getPlus() { return plus; }
 	string getChosenSuit() { return chosenSuit; }
 };
