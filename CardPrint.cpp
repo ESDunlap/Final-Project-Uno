@@ -78,6 +78,7 @@ string BasicCard::getFileName()
 ostream& operator<<(ostream& os, const BasicCard& card)
 {
     os << suitColor(card.getSuit()) << printAscii(card.getFileName()) << endl << "\e[0m";
+    return os;
 }
 
 string WildCard::getFileName()
@@ -92,6 +93,7 @@ string WildCard::getFileName()
 ostream& operator<<(ostream& os, const WildCard& card)
 {
     os << suitColor(card.getSuit()) << printAscii(card.getFileName()) << endl << "\e[0m";
+    return os;
 }
 
 string ReverseCard::getFileName()
@@ -105,6 +107,7 @@ string ReverseCard::getFileName()
 ostream& operator<<(ostream& os, const ReverseCard& card)
 {
     os << suitColor(card.getSuit()) << printAscii(card.getFileName()) << endl << "\e[0m";
+    return os;
 }
 
 string SkipCard::getFileName()
@@ -118,6 +121,7 @@ string SkipCard::getFileName()
 ostream& operator<<(ostream& os, const SkipCard& card)
 {
     os << suitColor(card.getSuit()) << printAscii(card.getFileName()) << endl << "\e[0m";
+    return os;
 }
 
 string getMultiFileContents(int size, string& Files[size], int& suits[size])
@@ -178,5 +182,7 @@ ostream& operator<<(ostream& os, const Player& p)
 
     Art = getMultiFileContents(p.getSize(), Files, suits);  //Get all Art
 
-    return Art;     //Return Art
+    os << Art;
+
+    return os;     //Return Art
 }
