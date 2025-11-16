@@ -13,11 +13,11 @@ protected:
 	int suit; //wild, red, green, yellow, blue
 public:
     void fixWildSuit() {suit=-1;}
-	int getRank() { return rank; }
-	int getSuit() { return suit; }
+	int getRank() const { return rank; }
+	int getSuit() const { return suit; }
 	virtual void changeWild(int newSuit){};
-	virtual bool getPlus() { return false; }
-	virtual string getFileName() { return (string)"File.txt"; }
+	virtual bool getPlus() const { return false; }
+	virtual string getFileName() const { return (string)"File.txt"; }
 };
 
 class BasicCard : public Card
@@ -27,7 +27,8 @@ private:
 public:
 	BasicCard(int, string, bool= false);
 	BasicCard(int, int, bool= false);
-	bool getPlus(){return plus;}
+	bool getPlus() const { return plus; }
+	string getFileName() const;
 };
 
 class WildCard : public Card
@@ -38,20 +39,23 @@ private:
 public:
 	WildCard(bool plus=false){this->plus = plus; rank=-1; suit=-1;}
 	void changeWild(int newSuit) {suit=newSuit;}
-	bool getPlus() { return plus; }
-	string getChosenSuit() { return chosenSuit; }
+	bool getPlus() const { return plus; }
+	string getChosenSuit() const { return chosenSuit; }
+	string getFileName() const;
 };
 
 class ReverseCard : public Card
 {
 public:
 	ReverseCard(int suit){this->suit = suit; rank = -2;}
+	string getFileName() const;
 };
 
 class SkipCard : public Card
 {
 public:
 	SkipCard(int suit){this->suit = suit; rank = -3;}
+	string getFileName() const;
 };
 
 class Deck
@@ -73,3 +77,7 @@ public:
 BasicCard* makeBasicCard(int rank, int suit, bool plus = false);
 
 WildCard* makeWildCard(bool plus = false);
+
+ReverseCard* makeReverseCard(int suit);
+
+SkipCard* makeSkipCard(int suit);
