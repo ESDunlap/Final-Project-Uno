@@ -65,7 +65,7 @@ string suitColor(int suit)
     }
 }
 
-string BasicCard::getFileName()
+string BasicCard::getFileName() const
 {
     string file("");
     file += (string)"Basic";
@@ -81,7 +81,7 @@ ostream& operator<<(ostream& os, const BasicCard& card)
     return os;
 }
 
-string WildCard::getFileName()
+string WildCard::getFileName() const
 {
     string file("");
     file += (string)"Wild";
@@ -96,7 +96,7 @@ ostream& operator<<(ostream& os, const WildCard& card)
     return os;
 }
 
-string ReverseCard::getFileName()
+string ReverseCard::getFileName() const
 {
     string file("");
     file += (string)"Reverse";
@@ -110,7 +110,7 @@ ostream& operator<<(ostream& os, const ReverseCard& card)
     return os;
 }
 
-string SkipCard::getFileName()
+string SkipCard::getFileName() const
 {
     string file("");
     file += (string)"Skip";
