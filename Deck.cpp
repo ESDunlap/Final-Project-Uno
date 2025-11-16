@@ -148,7 +148,11 @@ bool Deck::onPlay(Card* c)
     cout<<"Plus Card: "<<playPile[0]->getPlus()<<endl;//debug
     if(((c->getRank()==playPile[0]->getRank())&&(c->getPlus()==playPile[0]->getPlus())) //Check if plus card
     ||
-    (c->getSuit()==playPile[0]->getSuit())) //Check Colors
+    (c->getSuit()==playPile[0]->getSuit())
+    ||
+    c->getRank()==-1
+    ||
+    playPile[0]->getSuit()==-1)
     {
         cout<<"Return True"<<endl;
         if(playPile[0]->getRank()==-1)
@@ -158,4 +162,19 @@ bool Deck::onPlay(Card* c)
     }
     cout<<"Return False"<<endl;
     return false;
+}
+
+int getValidInt(string message)
+{
+	int getInt;
+	cout<<message<<endl;
+	cin>>getInt;
+	while(!cin)
+	{
+		cin.clear();
+		cin.ignore(INT_MAX, '\n');
+		cout<<"Error: Not an Int"<<endl;
+		cin>>getInt;
+	}
+	return getInt;
 }
