@@ -10,6 +10,7 @@
 
 #include "Deck.h"
 #include "Player.h"
+#include "CardPrint.h"
 
 int main()
 {
@@ -43,9 +44,9 @@ int main()
 	bool reverse= false;
 	bool skip= false;
 	bool plus= false;
-	int nextPlayerSize;
-	int crossPlayerSize;
-	int previousPlayerSize;
+	int nextPlayer;
+	int crossPlayer;
+	int previousPlayer;
 	try
 	{
     	while (!someoneWon)
@@ -53,30 +54,36 @@ int main()
     	    if(!reverse)
     	    {
     	        currentPlayer = (currentPlayer+1) % (numAi+1);
-    	        nextPlayerSize= allPlayers[(currentPlayer+1)%4].getSize();
-    	        crossPlayerSize= allPlayers[(currentPlayer+2)%4].getSize();
-    	        previousPlayerSize= allPlayers[(currentPlayer+3)%4].getSize();
+    	        nextPlayer= (currentPlayer+1)%4;
+    	        crossPlayer= (currentPlayer+2)%4;
+    	        previousPlayer= (currentPlayer+3)%4;
     	    }
     	    else
     	    {
     	        currentPlayer = (currentPlayer+3) % (numAi+1);
-    	        nextPlayerSize= allPlayers[(currentPlayer+3)%4].getSize();
-    	        crossPlayerSize= allPlayers[(currentPlayer+2)%4].getSize();
-    	        previousPlayerSize= allPlayers[(currentPlayer+1)%4].getSize();
+    	        nextPlayer= (currentPlayer+3)%4;
+    	        crossPlayer= (currentPlayer+2)%4;
+    	        previousPlayer= (currentPlayer+1)%4;
     	    }
     	    if (currentPlayer==0)
     	    {
-    	    cout<<"Next Player Hand Size: "<<nextPlayerSize<<endl;
-            cout<<"Across Player Hand Size: "<<crossPlayerSize<<endl;
-	        cout<<"Previous Player Hand Size: "<<previousPlayerSize<<endl;
+    	    cout<<allPlayers[nextPlayer].playerName<<"'s Hand Size: ";
+    	    cout<<allPlayers[nextPlayer].getSize()<<endl;
+            cout<<allPlayers[crossPlayer].playerName<<"'s Hand Size: ";
+            cout<<allPlayers[crossPlayer].getSize()<<endl;
+	        cout<<allPlayers[previousPlayer].playerName<<"'s Hand Size: ";
+	        cout<<allPlayers[previousPlayer].getSize()<<endl;
 	        }
 	        cout<<allPlayers[currentPlayer].playerName<<" turn: "<<endl;
     	    allPlayers[currentPlayer].playTurn(reverse, skip, plus, newDeck,
-    	                                       nextPlayerSize, crossPlayerSize,
-    	                                       previousPlayerSize);
+    	                                       allPlayers[nextPlayer].getSize(),
+    	                                       allPlayers[crossPlayer].getSize(),
+    	                                       allPlayers[previousPlayer].getSize(),
+    	                                       allPlayers[0]);
     	    if(allPlayers[currentPlayer].getSize() == 0)
     	        someoneWon=true;
     	}
+    	cout<<allPlayers[currentPlayer].playerName<<" HAS WON!!"<<endl;
 	}
 	catch(long tooSmall)
 	{
