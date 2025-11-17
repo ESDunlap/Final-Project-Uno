@@ -86,3 +86,4 @@ ReverseCard* makeReverseCard(int suit);
 SkipCard* makeSkipCard(int suit);
 
 int getValidInt(string message);
+
