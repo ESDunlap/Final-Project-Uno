@@ -6,6 +6,7 @@
 
 #include "Deck.h"
 #include "Player.h"
+#include "CardPrint.h"
 
 using namespace std;
 
@@ -218,7 +219,6 @@ int Player::decideCard(Card* lastCard, int nextPlayer, int crossPlayer, int prev
 			return location;
 		}
 	}
-	cout<<"No Valid Card"<<endl;
 	return -1; //Draw
 }
 
@@ -324,18 +324,23 @@ bool Player::playCard(int c, Deck& d, bool& reverse, bool& skip, bool& plus)
 			else
 			{
 			    colorChosen=rand() % 4 + 1;
+			    cout<<playerName<<" played a Wild Card!"<<endl;
 			    play->changeWild(colorChosen);
 			}
 			break;
 		}
 		case -2:
 		{
+		    if(AiPlayer)
+		        cout<<playerName<<" played a reverse!"<<endl;
 			cout<<"Turn Order Reversed!"<<endl;
 			reverse=true;
 			break;
 		}
 		case -3:
 		{
+		    if(AiPlayer)
+		        cout<<playerName<<" played a skip!"<<endl;
 			skip=true;
 			break;
 		}
@@ -350,13 +355,14 @@ bool Player::playCard(int c, Deck& d, bool& reverse, bool& skip, bool& plus)
 	}
 	else
 	{
-		cout<<"Invalid Card"<<endl;
+		cout<<"Invalid Play"<<endl;
 		return false;
 	}
 }
 
 void Player::playTurn(bool& reverse, bool& skip, bool& plus, Deck& d,
-                      int nextPlayer, int crossPlayer, int previousPlayer)
+                      int nextPlayer, int crossPlayer, int previousPlayer,
+                      Player& currentHand)
 {
 	if(skip)
 	{
@@ -369,35 +375,32 @@ void Player::playTurn(bool& reverse, bool& skip, bool& plus, Deck& d,
 		if (d.playPile[0]->getRank()==-1)
 		{
 			giveCard(d);
+			cout<<playerName<<" draws a card"<<endl;
 			giveCard(d);
+			cout<<playerName<<" draws a card"<<endl;
 			giveCard(d);
+			cout<<playerName<<" draws a card"<<endl;
 			giveCard(d);
+			cout<<playerName<<" draws a card"<<endl;
 		}
 		else
 		{
 			giveCard(d);
+			cout<<playerName<<" draws a card"<<endl;
 			giveCard(d);
+			cout<<playerName<<" draws a card"<<endl;
 		}
 		plus=false;
 		return;
 	}
 	else if (AiPlayer==false)
 	{
-		for(int i = 0; i < size; i++)
-		{
-			cout<<"Card: "<<i<<endl;
-			cout<<"Rank: "<<hand[i]->getRank()<<endl;
-			cout<<"Suit: "<<hand[i]->getSuit()<<endl; //Replace these later
-			cout<<"Plus: "<<hand[i]->getPlus()<<endl<<endl;
-		}
-		cout<<"Top Rank: "<<d.playPile[0]->getRank()<<endl; //debug
-		cout<<"Top Suit: "<<d.playPile[0]->getSuit()<<endl; //debug
-		cout<<"Plus Card: "<<d.playPile[0]->getPlus()<<endl;//debug
 		int playedCardNum;
 		bool cardPlayed=false;
 		while(!cardPlayed)
 		{
-			playedCardNum= getValidInt("Which card would you like to play? (Enter -1 to draw)");
+		    cout<<currentHand;
+			playedCardNum= getValidInt("Which card would you like to play? (Enter 0 to draw)")-1;
 			if (playedCardNum>=size||playedCardNum<-1)
 				cout<<"Invalid Card/Input"<<endl;
 			else if(playedCardNum==-1)
