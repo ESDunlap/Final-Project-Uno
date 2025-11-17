@@ -167,6 +167,14 @@ string getMultiFileContents(const vector<string>& Files, const vector<int>& suit
         Lines += TempLine;              //Add newline
         loops++;
     }
+    string indexes("");
+    for(int index = 0; index < Files.size(); index++)
+    {
+        indexes += (string)"     ";
+        indexes += to_string(index + 1);
+        indexes += (string)"     ";
+    }
+    Lines += indexes + "\n";
     return Lines;
 }
 
