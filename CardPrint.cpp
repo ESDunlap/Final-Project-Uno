@@ -170,9 +170,9 @@ string getMultiFileContents(const vector<string>& Files, const vector<int>& suit
     string indexes("");
     for(int index = 0; index < Files.size(); index++)
     {
-        indexes += (string)"     ";
+        indexes += (string)"       ";
         indexes += to_string(index + 1);
-        indexes += (string)"     ";
+        indexes += (string)"       ";
     }
     Lines += indexes + "\n";
     return Lines;
