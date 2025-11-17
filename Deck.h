@@ -29,19 +29,19 @@ public:
 	BasicCard(int, int, bool= false);
 	bool getPlus() const { return plus; }
 	string getFileName() const;
+	friend ostream& operator<<(ostream& os, const BasicCard& card);
 };
 
 class WildCard : public Card
 {
 private:
 	bool plus;
-	string chosenSuit;
 public:
 	WildCard(bool plus=false){this->plus = plus; rank=-1; suit=-1;}
 	void changeWild(int newSuit) {suit=newSuit;}
 	bool getPlus() const { return plus; }
-	string getChosenSuit() const { return chosenSuit; }
 	string getFileName() const;
+	friend ostream& operator<<(ostream& os, const WildCard& card);
 };
 
 class ReverseCard : public Card
@@ -49,6 +49,7 @@ class ReverseCard : public Card
 public:
 	ReverseCard(int suit){this->suit = suit; rank = -2;}
 	string getFileName() const;
+	friend ostream& operator<<(ostream& os, const ReverseCard& card);
 };
 
 class SkipCard : public Card
@@ -56,6 +57,7 @@ class SkipCard : public Card
 public:
 	SkipCard(int suit){this->suit = suit; rank = -3;}
 	string getFileName() const;
+	friend ostream& operator<<(ostream& os, const SkipCard& card);
 };
 
 class Deck
