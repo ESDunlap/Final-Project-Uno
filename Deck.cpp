@@ -140,12 +140,6 @@ void Deck::startGame()
 
 bool Deck::onPlay(Card* c)
 {
-    cout<<"Played Rank: "<<c->getRank()<<endl; //debug
-    cout<<"Played Suit: "<<c->getSuit()<<endl; //debug
-    cout<<"Plus Card: "<<c->getPlus()<<endl; //debug
-    cout<<"Top Rank: "<<playPile[0]->getRank()<<endl; //debug
-    cout<<"Top Suit: "<<playPile[0]->getSuit()<<endl; //debug
-    cout<<"Plus Card: "<<playPile[0]->getPlus()<<endl;//debug
     if(((c->getRank()==playPile[0]->getRank())&&(c->getPlus()==playPile[0]->getPlus())) //Check if plus card
     ||
     (c->getSuit()==playPile[0]->getSuit())
@@ -154,13 +148,11 @@ bool Deck::onPlay(Card* c)
     ||
     playPile[0]->getSuit()==-1)
     {
-        cout<<"Return True"<<endl;
         if(playPile[0]->getRank()==-1)
             playPile[0]->fixWildSuit(); //Return color to wild once a card is played on top
         playPile.insert(playPile.begin(), c);
         return true;
     }
-    cout<<"Return False"<<endl;
     return false;
 }
 
