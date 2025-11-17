@@ -170,3 +170,4 @@ int getValidInt(string message)
 	}
 	return getInt;
 }
+
