@@ -79,6 +79,7 @@ string BasicCard::getFileName() const
 ostream& operator<<(ostream& os, const BasicCard& card)
 {
     os << suitColor(card.getSuit()) << printAscii(card.getFileName()) << endl << "\e[0m";
+    cout << card.getSuit();
     return os;
 }
 
@@ -94,6 +95,7 @@ string WildCard::getFileName() const
 ostream& operator<<(ostream& os, const WildCard& card)
 {
     os << suitColor(card.getSuit()) << printAscii(card.getFileName()) << endl << "\e[0m";
+    cout << card.getSuit();
     return os;
 }
 
@@ -108,6 +110,7 @@ string ReverseCard::getFileName() const
 ostream& operator<<(ostream& os, const ReverseCard& card)
 {
     os << suitColor(card.getSuit()) << printAscii(card.getFileName()) << endl << "\e[0m";
+    cout << card.getSuit();
     return os;
 }
 
@@ -122,10 +125,11 @@ string SkipCard::getFileName() const
 ostream& operator<<(ostream& os, const SkipCard& card)
 {
     os << suitColor(card.getSuit()) << printAscii(card.getFileName()) << endl << "\e[0m";
+    cout << card.getSuit();
     return os;
 }
 
-string getMultiFileContents(vector<string> Files, vector<int> suits)
+string getMultiFileContents(const vector<string>& Files, const vector<int>& suits)
 {
     string Lines = "";        //All lines
 
@@ -180,6 +184,23 @@ ostream& operator<<(ostream& os, const Player& p)
 
         suits.push_back(card->getSuit());
     }
+
+    Art = getMultiFileContents(Files, suits);  //Get all Art
+
+    os << Art;
+
+    return os;     //Return Art
+}
+
+ostream& operator<<(ostream& os, const Deck& d)
+{
+    string Art;
+    vector<string> Files;
+    vector<int> suits;
+    Card* card = d.playPile[0];
+    string fName = card->getFileName();
+    Files.push_back(fName);    //Set files
+    suits.push_back(card->getSuit());
 
     Art = getMultiFileContents(Files, suits);  //Get all Art
 
