@@ -73,6 +73,7 @@ public:
 	Card* drawTop();
 	bool onPlay(Card*);
 	~Deck();
+	friend ostream& operator<<(ostream& os, const Deck& d);
 };
 
 
