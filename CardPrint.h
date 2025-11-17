@@ -10,4 +10,4 @@ using namespace std;
 string getFileContents(ifstream& File);
 string printAscii(string file);
 ostream& suitColor(ostream& os, int suit);
-string getMultiFileContents(vector<string> files, vector<int> suits);
+string getMultiFileContents(const vector<string>& Files, const vector<int>& suits);
