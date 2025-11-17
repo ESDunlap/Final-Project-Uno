@@ -1,9 +1,14 @@
 #pragma once
 #include <iostream> //Generic c++
-#include <vector>
-#include <string>
+#include <string> //Allows use of string functions
+#include <vector> //vectors
+#include <bits/stdc++.h> //for random_shuffle() https://www.geeksforgeeks.org/cpp/how-to-shuffle-a-vector-in-cpp/
+
+//Clear found by https://www.geeksforgeeks.org/cpp/vector-clear-in-cpp-stl/
+//Erase found by https://www.w3schools.com/cpp/trycpp.asp?filename=demo_ref_vector_erase
 
 using namespace std;
+
 class Deck;
 
 class Card
@@ -12,7 +17,7 @@ protected:
 	int rank; //-3,-2,-1, 0-9
 	int suit; //wild, red, green, yellow, blue
 public:
-    void fixWildSuit() {suit=-1;}
+    void fixWildSuit() {suit = -1;}
 	int getRank() const { return rank; }
 	int getSuit() const { return suit; }
 	virtual void changeWild(int newSuit){};
@@ -25,8 +30,8 @@ class BasicCard : public Card
 private:
 	bool plus;
 public:
-	BasicCard(int, string, bool= false);
-	BasicCard(int, int, bool= false);
+	BasicCard(int, string, bool = false);
+	BasicCard(int, int, bool = false);
 	bool getPlus() const { return plus; }
 	string getFileName() const;
 	friend ostream& operator<<(ostream& os, const BasicCard& card);
@@ -37,8 +42,8 @@ class WildCard : public Card
 private:
 	bool plus;
 public:
-	WildCard(bool plus=false){this->plus = plus; rank=-1; suit=-1;}
-	void changeWild(int newSuit) {suit=newSuit;}
+	WildCard(bool plus = false){this->plus = plus; rank = -1; suit = -1;}
+	void changeWild(int newSuit) {suit = newSuit;}
 	bool getPlus() const { return plus; }
 	string getFileName() const;
 	friend ostream& operator<<(ostream& os, const WildCard& card);

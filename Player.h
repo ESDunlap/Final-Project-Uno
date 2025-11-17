@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "Deck.h"
+#include "CardPrint.h"
 
 #define Basic 1 // Any Value
 #define BasicP 2 // Any Value
@@ -18,14 +19,14 @@ class Player
 private:
 	vector<Card*> hand;
 	int size = 0;
-	bool AiPlayer=false;
+	bool AiPlayer = false;
 public:
     string playerName;
     Card* lastPlayedCard;
 	int getSize() const { return size; }
 	vector<Card*> getHand() const { return hand; }
 	Card* getCard(int spot) const { return hand[spot]; }
-	void setAi() { AiPlayer=true; }
+	void setAi() { AiPlayer = true; }
 	void giveCard(Deck&);
 	int decideCard(Card* lastCard, int nextPlayer, int oppositePlayer, int previousPlayer);
 	bool findCardType(int type, int suit, int& spot);

@@ -1,18 +1,8 @@
-#include <iostream> //Generic c++
-#include <climits> //Adds INT_MAX
-#include <string> //Allows use of string functions
-#include <iomanip> //Input Output additions
-#include <vector>
-
-#include "Deck.h"
 #include "Player.h"
-#include "CardPrint.h"
-
-using namespace std;
 
 void Player::giveCard(Deck& d)
 {
-	Card* newCard= d.drawTop();
+	Card* newCard = d.drawTop();
 	hand.push_back(newCard);
 	size++;
 }
@@ -69,10 +59,10 @@ void Player::giveCard(Deck& d)
 int Player::decideCard(Card* lastCard, int nextPlayer, int crossPlayer, int previousPlayer)
 {
 	int location = -1;
-	int priority[6] = { 3, 3, 3, 3, 3, 3 }; //Moved as it said it was out of scope before
-	/*
+	int priority[6] = { 3, 3, 3, 3, 3, 3 };
 	if (lastCard->getPlus()) // + Check
 	{
+	    /*
 		if (lastCard->getRank() == Wild)// Wild Check
 		{
 			if (findCardType(WildP, lastCard->getSuit(), location))
@@ -87,17 +77,18 @@ int Player::decideCard(Card* lastCard, int nextPlayer, int crossPlayer, int prev
 				return location;
 			}
 		}
-	}*/
-	if(true)
+		*/
+	}
+	if (true)
 	{
-		if (nextPlayer<=2) // Next Player On Low Cards
+		if (nextPlayer <= 2) // Next Player On Low Cards
 		{
 			priority[0] = BasicP;
 			priority[5] = Basic;
-			if (previousPlayer<=2) // Previous Player On Low Cards
+			if (previousPlayer <= 2) // Previous Player On Low Cards
 			{
 				priority[4] = Reverse;
-				if (crossPlayer<=2) // Cross Player On Low Cards
+				if (crossPlayer <= 2) // Cross Player On Low Cards
 				{
 					priority[1] = WildP;
 					priority[2] = Wild;
@@ -112,7 +103,7 @@ int Player::decideCard(Card* lastCard, int nextPlayer, int crossPlayer, int prev
 			}
 			else // Previous Player Not On Low Cards
 			{
-				if (crossPlayer<=2) // Cross Player On Low Cards
+				if (crossPlayer <= 2) // Cross Player On Low Cards
 				{
 					priority[1] = Reverse;
 					priority[2] = Wild;
@@ -139,10 +130,10 @@ int Player::decideCard(Card* lastCard, int nextPlayer, int crossPlayer, int prev
 		else // Next Player Not On Low Cards
 		{
 			priority[0] = Basic;
-			if (previousPlayer<=2) // Previous Player On Low Cards
+			if (previousPlayer <= 2) // Previous Player On Low Cards
 			{
 				priority[5] = Reverse;
-				if (crossPlayer<=2) // Cross Player On Low Cards
+				if (crossPlayer <= 2) // Cross Player On Low Cards
 				{
 					priority[1] = BasicP;
 					priority[2] = Wild;
@@ -168,9 +159,9 @@ int Player::decideCard(Card* lastCard, int nextPlayer, int crossPlayer, int prev
 			}
 			else // Previous Player Not On Low Cards
 			{
-				if (crossPlayer<=2) // Cross Player On Low Cards
+				if (crossPlayer <= 2) // Cross Player On Low Cards
 				{
-					if (lastCard->getRank()== Reverse) // Last Card Was Reverse
+					if (lastCard->getRank() == Reverse) // Last Card Was Reverse
 					{
 						priority[1] = Reverse;
 						priority[2] = BasicP;
@@ -289,145 +280,145 @@ bool Player::findCardType(int type, int suit, int& spot)
 
 		}
 	}
-	return false; //Added so I can compile it change later
+	return false;
 }
 
-bool Player::playCard(int c, Deck& d, bool& reverse, bool& skip, bool& plus)
+bool Player::playCard(int card, Deck& deck, bool& reverse, bool& skip, bool& plus)
 {
-	Card* play = hand[c];
-	if(d.onPlay(play))
+	Card* play = hand[card];
+	if (deck.onPlay(play))
 	{
-		switch(play->getRank())
+		switch (play->getRank())
 		{
 		case -1:
 		{
 			int newColor;
-			bool colorChosen=false;
-			if(!AiPlayer)
+			bool colorChosen = false;
+			if (!AiPlayer)
 			{
-				while(!colorChosen)
+				while (!colorChosen)
 				{
-					cout<<"What color are you playing it as?"<<endl;
-					cout<<"(1 Red, 2 Green, 3 Yellow, 4 Blue)"<<endl;
-					newColor=getValidInt("What color are you playing it as?");
-					if(newColor<5 && newColor>0)
+					cout << endl;
+					cout << "(1 Red, 2 Green, 3 Yellow, 4 Blue)" << endl;
+					newColor = getValidInt("What color are you playing it as? ");
+					if (newColor < 5 && newColor > 0)
 					{
 						play->changeWild(newColor);
-						colorChosen=true;
+						colorChosen = true;
 					}
 					else
 					{
-						cout<<"Invalid Input"<<endl;
+						cout << "Invalid Input" << endl;
 					}
 				}
 			}
 			else
 			{
-			    colorChosen=rand() % 4 + 1;
-			    cout<<playerName<<" played a Wild Card!"<<endl;
+			    colorChosen = rand() % 4 + 1;
+			    cout << playerName << " played a Wild Card!" << endl;
 			    play->changeWild(colorChosen);
 			}
 			break;
 		}
 		case -2:
 		{
-		    if(AiPlayer)
-		        cout<<playerName<<" played a reverse!"<<endl;
-			cout<<"Turn Order Reversed!"<<endl;
-			reverse=true;
+		    if (AiPlayer)
+		        cout << playerName << " played a reverse!" << endl;
+			cout << "Turn Order Reversed!" << endl;
+			reverse = true;
 			break;
 		}
 		case -3:
 		{
-		    if(AiPlayer)
-		        cout<<playerName<<" played a skip!"<<endl;
-			skip=true;
+		    if (AiPlayer)
+		        cout << playerName << " played a skip!" << endl;
+			skip = true;
 			break;
 		}
 		}
-		if(play->getPlus())
+		if (play->getPlus())
 		{
-			plus=true;
+			plus = true;
 		}
-		hand.erase(hand.begin() + c);
+		hand.erase(hand.begin() + card);
 		size--;
 		return true;
 	}
 	else
 	{
-		cout<<"Invalid Play"<<endl;
+		cout << "Invalid Play" << endl;
 		return false;
 	}
 }
 
-void Player::playTurn(bool& reverse, bool& skip, bool& plus, Deck& d,
+void Player::playTurn(bool& reverse, bool& skip, bool& plus, Deck& deck,
                       int nextPlayer, int crossPlayer, int previousPlayer,
                       Player& currentHand)
 {
-	if(skip)
+	if (skip)
 	{
-		skip=false;
+		skip = false;
 		return;
 	}
-	else if(plus)
+	else if (plus)
 	{
-	    cout<<"Forced to Draw"<<endl;
-		if (d.playPile[0]->getRank()==-1)
+	    cout << "Forced to Draw" << endl;
+		if (deck.playPile[0]->getRank() == -1)
 		{
-			giveCard(d);
-			cout<<playerName<<" draws a card"<<endl;
-			giveCard(d);
-			cout<<playerName<<" draws a card"<<endl;
-			giveCard(d);
-			cout<<playerName<<" draws a card"<<endl;
-			giveCard(d);
-			cout<<playerName<<" draws a card"<<endl;
+			giveCard(deck);
+			cout << playerName << " draws a card" << endl;
+			giveCard(deck);
+			cout << playerName << " draws a card" << endl;
+			giveCard(deck);
+			cout << playerName << " draws a card" << endl;
+			giveCard(deck);
+			cout << playerName << " draws a card" << endl;
 		}
 		else
 		{
-			giveCard(d);
-			cout<<playerName<<" draws a card"<<endl;
-			giveCard(d);
-			cout<<playerName<<" draws a card"<<endl;
+			giveCard(deck);
+			cout << playerName << " draws a card" << endl;
+			giveCard(deck);
+			cout << playerName << " draws a card" << endl;
 		}
-		plus=false;
+		plus = false;
 		return;
 	}
-	else if (AiPlayer==false)
+	else if (AiPlayer == false)
 	{
 		int playedCardNum;
-		bool cardPlayed=false;
-		while(!cardPlayed)
+		bool cardPlayed = false;
+		while (!cardPlayed)
 		{
-		    cout<<currentHand;
-		    cout<<"Top Card"<<endl;
-		    cout<<d;
-			playedCardNum= getValidInt("Which card would you like to play? (Enter 0 to draw)")-1;
-			if (playedCardNum>=size||playedCardNum<-1)
-				cout<<"Invalid Card/Input"<<endl;
-			else if(playedCardNum==-1)
-				giveCard(d);
-			else if(playCard(playedCardNum, d, reverse, skip, plus))
-				cardPlayed=true;
+		    cout << currentHand;
+		    cout << "Top Card:" << endl;
+		    cout << deck;
+			playedCardNum = getValidInt("Which card would you like to play? (Enter 0 to draw) ") - 1;
+			if (playedCardNum >= size || playedCardNum < -1)
+				cout << "Invalid Card/Input" << endl;
+			else if (playedCardNum == -1)
+				giveCard(deck);
+			else if (playCard(playedCardNum, deck, reverse, skip, plus))
+				cardPlayed = true;
 		}
 	}
 	else
 	{
 		int playedCardNum;
-		bool cardPlayed=false;
-		while(!cardPlayed)
+		bool cardPlayed = false;
+		while (!cardPlayed)
 		{
-			playedCardNum= decideCard(d.playPile[0], nextPlayer, crossPlayer, previousPlayer);
-			if(playedCardNum==-1)
+			playedCardNum = decideCard(deck.playPile[0], nextPlayer, crossPlayer, previousPlayer);
+			if (playedCardNum == -1)
 			{
-				giveCard(d);
-				cout<<playerName<<" choose to draw a card"<<endl;
+				giveCard(deck);
+				cout << playerName << " chose to draw a card" << endl;
 			}
-			else if(playCard(playedCardNum, d, reverse, skip, plus))
+			else if (playCard(playedCardNum, deck, reverse, skip, plus))
 			{
-			    cout<<"Played"<<endl;
-			    cout<<d;
-				cardPlayed=true;
+			    cout << "Played:" << endl;
+			    cout << deck;
+				cardPlayed = true;
 			}
 		}
 	}

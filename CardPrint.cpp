@@ -1,13 +1,3 @@
-#include <iostream> //Generic c++
-#include <fstream> // Allows file reading
-#include <limits> // Credit to Google "fstream c++ skip lines"
-#include <string> //Allows use of string functions
-#include <climits> //Adds INT_MAX
-#include <iomanip> //Input Output additions
-#include <vector>
-
-#include "Deck.h"
-#include "Player.h"
 #include "CardPrint.h"
 
 string getFileContents(ifstream& File)
@@ -79,7 +69,6 @@ string BasicCard::getFileName() const
 ostream& operator<<(ostream& os, const BasicCard& card)
 {
     os << suitColor(card.getSuit()) << printAscii(card.getFileName()) << endl << "\e[0m";
-    cout << card.getSuit();
     return os;
 }
 
@@ -95,7 +84,6 @@ string WildCard::getFileName() const
 ostream& operator<<(ostream& os, const WildCard& card)
 {
     os << suitColor(card.getSuit()) << printAscii(card.getFileName()) << endl << "\e[0m";
-    cout << card.getSuit();
     return os;
 }
 
@@ -110,7 +98,6 @@ string ReverseCard::getFileName() const
 ostream& operator<<(ostream& os, const ReverseCard& card)
 {
     os << suitColor(card.getSuit()) << printAscii(card.getFileName()) << endl << "\e[0m";
-    cout << card.getSuit();
     return os;
 }
 
@@ -125,13 +112,12 @@ string SkipCard::getFileName() const
 ostream& operator<<(ostream& os, const SkipCard& card)
 {
     os << suitColor(card.getSuit()) << printAscii(card.getFileName()) << endl << "\e[0m";
-    cout << card.getSuit();
     return os;
 }
 
 string getMultiFileContents(const vector<string>& Files, const vector<int>& suits)
 {
-    string Lines = "";        //All lines
+    string Lines = "\n";        //All lines
 
     for (int file = 0; file < Files.size(); file++)
     {
@@ -167,26 +153,28 @@ string getMultiFileContents(const vector<string>& Files, const vector<int>& suit
         Lines += TempLine;              //Add newline
         loops++;
     }
+    if (Files.size() == 1) { return Lines; }
     string indexes("");
-    for(int index = 0; index < Files.size(); index++)
+    for (int index = 0; index < Files.size(); index++)
     {
-        indexes += (string)"       ";
+        indexes += (string)"     ";
         indexes += to_string(index + 1);
         indexes += (string)"       ";
+        if (index < 10) { indexes += (string)" "; }
     }
-    Lines += indexes + "\n";
+    Lines += indexes + "\n\n";
     return Lines;
 }
 
-ostream& operator<<(ostream& os, const Player& p)
+ostream& operator<<(ostream& os, const Player& player)
 {
 
     string Art;
     vector<string> Files;
     vector<int> suits;
-    for (int file = 0; file < p.getSize(); file++)
+    for (int file = 0; file < player.getSize(); file++)
     {
-        Card* card = p.getCard(file);
+        Card* card = player.getCard(file);
         string fName = card->getFileName();
         Files.push_back(fName);    //Set files
 
@@ -200,12 +188,12 @@ ostream& operator<<(ostream& os, const Player& p)
     return os;     //Return Art
 }
 
-ostream& operator<<(ostream& os, const Deck& d)
+ostream& operator<<(ostream& os, const Deck& deck)
 {
     string Art;
     vector<string> Files;
     vector<int> suits;
-    Card* card = d.playPile[0];
+    Card* card = deck.playPile[0];
     string fName = card->getFileName();
     Files.push_back(fName);    //Set files
     suits.push_back(card->getSuit());
