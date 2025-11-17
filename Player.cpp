@@ -400,6 +400,8 @@ void Player::playTurn(bool& reverse, bool& skip, bool& plus, Deck& d,
 		while(!cardPlayed)
 		{
 		    cout<<currentHand;
+		    cout<<"Top Card"<<endl;
+		    cout<<d;
 			playedCardNum= getValidInt("Which card would you like to play? (Enter 0 to draw)")-1;
 			if (playedCardNum>=size||playedCardNum<-1)
 				cout<<"Invalid Card/Input"<<endl;
@@ -417,9 +419,14 @@ void Player::playTurn(bool& reverse, bool& skip, bool& plus, Deck& d,
 		{
 			playedCardNum= decideCard(d.playPile[0], nextPlayer, crossPlayer, previousPlayer);
 			if(playedCardNum==-1)
+			{
 				giveCard(d);
+				cout<<playerName<<" choose to draw a card"<<endl;
+			}
 			else if(playCard(playedCardNum, d, reverse, skip, plus))
 			{
+			    cout<<"Played"<<endl;
+			    cout<<d;
 				cardPlayed=true;
 			}
 		}
@@ -431,6 +438,5 @@ Player::~Player()
 	for(Card* card: hand)
 	{
 		delete card;
-		cout<<"Deleted a card"<<endl;
 	}
 }
